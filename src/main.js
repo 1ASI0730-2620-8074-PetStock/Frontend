@@ -11,7 +11,7 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 import Select from 'primevue/select'
 import InputNumber from 'primevue/inputnumber'
-import InputSwitch from 'primevue/inputswitch'
+import ToggleSwitch from 'primevue/toggleswitch'
 import DatePicker from 'primevue/datepicker'
 import Checkbox from 'primevue/checkbox'
 import Card from 'primevue/card'
@@ -36,7 +36,7 @@ createApp(App)
     .component('pv-button', Button)
     .component('pv-select', Select)
     .component('pv-input-number', InputNumber)
-    .component('pv-input-switch', InputSwitch)
+    .component('ToggleSwitch', ToggleSwitch)
     .component('pv-date-picker', DatePicker)
     .component('pv-checkbox', Checkbox)
     .component('pv-card', Card)
