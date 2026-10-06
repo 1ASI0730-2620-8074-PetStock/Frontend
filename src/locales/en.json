@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
@@ -42,5 +43,24 @@
     "success-title": "Profile updated successfully!",
     "success-detail": "Your account data has been saved.",
     "save-error": "We could not save your changes. Try again."
+=======
+  "login": {
+    "welcome": "Welcome to PetStock",
+    "email_label": "Email address",
+    "email_placeholder": "eduardo@petstock.pe",
+    "password_label": "Password",
+    "password_placeholder": "••••••••••••",
+    "forgot_password": "Forgot your password?",
+    "remember_me": "Keep me logged in on this device",
+    "submit_button": "Log in →",
+    "divider_text": "OR LOG IN WITH",
+    "social_google": "Google",
+    "social_facebook": "Facebook",
+    "register_prompt": "Don't have an account?",
+    "register_link": "Register here",
+    "encrypted_connection": "256-bit encrypted connection",
+    "help_center": "Help Center",
+    "terms": "Terms"
+>>>>>>> origin/develop
   }
 }

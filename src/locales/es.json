@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
@@ -42,5 +43,24 @@
     "success-title": "¡Perfil actualizado con éxito!",
     "success-detail": "Los datos de tu cuenta han sido guardados correctamente.",
     "save-error": "No pudimos guardar tus cambios. Inténtalo de nuevo."
+=======
+  "login": {
+    "welcome": "Bienvenido a PetStock",
+    "email_label": "Correo electrónico",
+    "email_placeholder": "eduardo@petstock.pe",
+    "password_label": "Contraseña",
+    "password_placeholder": "••••••••••••",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "remember_me": "Mantener sesión abierta en este equipo",
+    "submit_button": "Iniciar sesión →",
+    "divider_text": "O INICIA SESIÓN CON",
+    "social_google": "Google",
+    "social_facebook": "Facebook",
+    "register_prompt": "¿No tienes una cuenta?",
+    "register_link": "Regístrate aquí",
+    "encrypted_connection": "Conexión cifrada de 256-bits",
+    "help_center": "Centro de Ayuda",
+    "terms": "Términos"
+>>>>>>> origin/develop
   }
 }
