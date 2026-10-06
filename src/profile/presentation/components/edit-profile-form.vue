@@ -57,12 +57,6 @@ function onSubmit() {
 
 <template>
   <form class="edit-profile-form" novalidate @submit.prevent="onSubmit">
-    <div class="avatar">
-      <pv-avatar v-if="profile.photoUrl" :image="profile.photoUrl" shape="circle" size="xlarge"
-                 :aria-label="profile.fullName"/>
-      <pv-avatar v-else :label="profile.initials" shape="circle" size="xlarge" :aria-label="profile.fullName"/>
-    </div>
-
     <div class="field">
       <label for="firstName">{{ t('edit-profile.first-name') }}</label>
       <pv-input-text id="firstName" v-model="form.firstName" :placeholder="t('edit-profile.first-name-placeholder')"
@@ -81,7 +75,7 @@ function onSubmit() {
       </small>
     </div>
 
-    <div class="field">
+    <div class="field full-width">
       <label for="email">{{ t('edit-profile.email') }}</label>
       <pv-input-text id="email" v-model="form.email" type="email" :placeholder="t('edit-profile.email-placeholder')"
                      :invalid="submitted && (isEmpty(form.email) || !isValidEmail(form.email))" aria-required="true"/>
@@ -93,45 +87,92 @@ function onSubmit() {
       </small>
     </div>
 
-    <div class="field">
+    <div class="field full-width">
       <label for="password">{{ t('edit-profile.password') }}</label>
       <pv-password input-id="password" v-model="form.password" :feedback="false" toggle-mask
                    :placeholder="t('edit-profile.password-placeholder')"/>
-      <small>{{ t('edit-profile.password-hint') }}</small>
+      <small class="hint">{{ t('edit-profile.password-hint') }}</small>
     </div>
 
-    <pv-button type="submit" :label="t('edit-profile.save')" icon="pi pi-check" class="w-full"/>
-    <pv-button type="button" :label="t('edit-profile.cancel')" text class="w-full" @click="emit('cancel')"/>
+    <div class="actions full-width">
+      <pv-button type="button" :label="t('edit-profile.cancel')" text class="cancel-button" @click="emit('cancel')"/>
+      <pv-button type="submit" :label="t('edit-profile.save')" icon="pi pi-check" class="save-button"/>
+    </div>
   </form>
 </template>
 
 <style scoped>
+/* desktop: two columns (first name | last name) */
 .edit-profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
 }
 
-.avatar {
-  display: flex;
-  justify-content: center;
+.full-width {
+  grid-column: 1 / -1;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.4rem;
 }
 
-.field :deep(input) {
+.field label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.field :deep(input),
+.field :deep(.p-password) {
   width: 100%;
+}
+
+/* red border when a required field is empty */
+.field :deep(.p-invalid) {
+  border-color: #D32F2F !important;
 }
 
 .error {
-  color: #d32f2f;
+  color: #D32F2F;
 }
 
-.w-full {
-  width: 100%;
+.hint {
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.save-button {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  border-radius: 12px;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+}
+
+.save-button:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.cancel-button {
+  color: var(--secondary-color);
+}
+
+/* mobile: one column and full-width buttons */
+@media (max-width: 600px) {
+  .edit-profile-form {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
 }
 </style>
