@@ -28,7 +28,10 @@ createApp(App)
     .use(PrimeVue, {
         ripple: true,
         theme: {
-            preset: Aura
+            preset: Aura,
+            options: {
+                darkModeSelector: false
+            }
         }
     })
     .component('pv-input-text', InputText)
