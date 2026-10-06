@@ -91,5 +91,34 @@
     "success-title": "¡Perfil actualizado con éxito!",
     "success-detail": "Los datos de tu cuenta han sido guardados correctamente.",
     "save-error": "No pudimos guardar tus cambios. Inténtalo de nuevo."
+  },
+
+  "analytics": {
+    "eyebrow": "ANALYTICS",
+    "title": "Reportes",
+    "subtitle": "Consulta el comportamiento de tus ventas e inventario.",
+    "weeklyMetrics": "MÉTRICAS SEMANALES",
+    "salesByDay": "Ventas por día",
+    "weeklyTotal": "Total sem:",
+    "highestRevenueDay": "Día de mayor ingreso:",
+    "sales": "ventas",
+    "topProducts": "Productos más vendidos",
+    "topThree": "Top 3 →",
+    "lowMovement": "Menos movimiento",
+    "attention": "Atención",
+    "stock": "Stock: {count} unidades",
+    "inventory": {
+      "title": "Inventario general",
+      "products": "Productos disponibles",
+      "inCatalog": "en catálogo",
+      "categories": "Categorías",
+      "active": "activas"
+    },
+    "downloadPdf": "Descargar reporte en PDF",
+    "pdfHint": "Usa la opción de impresión del navegador para guardar el reporte como PDF.",
+    "loading": "Cargando reportes...",
+    "loadError": "No se pudo cargar la información de reportes.",
+    "noProducts": "No hay productos registrados.",
+    "noInformation": "No hay información disponible."
   }
 }
