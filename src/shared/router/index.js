@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/iam/presentation/views/login.view.vue'
+import profileRoutes from "../../profile/presentation/profile-routes.js";
+
 const routes = [
     {
         path: '/',
@@ -9,7 +11,8 @@ const routes = [
         path: '/login',
         name: 'login',
         component: LoginView
-    }
+    },
+    { path: '/profile', children: profileRoutes }
 ]
 
 const router = createRouter({

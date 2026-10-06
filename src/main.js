@@ -5,7 +5,28 @@ import { createPinia } from 'pinia';
 import router from '@/shared/router';
 import i18n from "./i18n.js";
 import PrimeVue from 'primevue/config';
+import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
+import 'primeicons/primeicons.css';
+
+// petStock theme: aura with orange as the primary color
+const PetStockTheme = definePreset(Aura, {
+    semantic: {
+        primary: {
+            50: '#FFF3EB',
+            100: '#FFE2CC',
+            200: '#FEC499',
+            300: '#FBA466',
+            400: '#F58740',
+            500: '#ED6B15',
+            600: '#D95A0B',
+            700: '#B44A0A',
+            800: '#8F3B0B',
+            900: '#74310C',
+            950: '#3F1704'
+        }
+    }
+});
 
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -29,7 +50,7 @@ createApp(App)
     .use(PrimeVue, {
         ripple: true,
         theme: {
-            preset: Aura
+            preset: PetStockTheme
         }
     })
     .use(createPinia())
