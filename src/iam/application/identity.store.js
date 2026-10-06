@@ -13,34 +13,35 @@ export const useIdentityStore = defineStore('identity', () => {
 
     // --- ACCIONES (Actions) ---
 
-    /**
-     * Procesa el inicio de sesión.
-     * @param {Object} credentials - { email, password }
-     * @returns {Promise<boolean>}
-     */
     async function login(credentials) {
         errors.value = [];
         try {
             const { user, session } = await identityApi.login(credentials);
 
-            // Actualizar estado en Pinia
             currentUser.value = user;
             token.value = session.token;
 
-            // Persistir sesión en el navegador
             localStorage.setItem('token', session.token);
             localStorage.setItem('currentUser', JSON.stringify(user));
 
             return true;
         } catch (error) {
-            errors.value.push(error.message || 'Error al iniciar sesión');
+            errors.value.push(error.response?.data?.message || error.message || 'Error al iniciar sesión');
             return false;
         }
     }
 
-    /**
-     * Cierra la sesión activa y limpia la memoria.
-     */
+    async function register(userData) {
+        errors.value = [];
+        try {
+            await identityApi.register(userData);
+            return true;
+        } catch (error) {
+            errors.value.push(error.response?.data?.message || error.message || 'Error al registrar el usuario');
+            return false;
+        }
+    }
+
     function logout() {
         currentUser.value = null;
         token.value = '';
@@ -48,12 +49,14 @@ export const useIdentityStore = defineStore('identity', () => {
         localStorage.removeItem('currentUser');
     }
 
+    // --- UN SOLO RETURN AL FINAL ---
     return {
         currentUser,
         token,
         errors,
         isAuthenticated,
         login,
-        logout
+        logout,
+        register
     };
 });

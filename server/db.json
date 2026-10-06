@@ -7,7 +7,8 @@
         "apellidos": "Mendoza",
         "correo_electronico": "admin@petstock.com",
         "telefono": "+51999888777",
-        "rol": "Admin"
+        "rol": "Admin",
+        "password": "123456"
       },
       {
         "id_usuario": 2,
@@ -15,7 +16,8 @@
         "apellidos": "Delgado",
         "correo_electronico": "maria.d@petstock.com",
         "telefono": "+51988776655",
-        "rol": "Vendedor"
+        "rol": "Vendedor",
+        "password": "123456"
       },
       {
         "id_usuario": 3,
@@ -23,7 +25,26 @@
         "apellidos": "Ramos",
         "correo_electronico": "jorge.r@petstock.com",
         "telefono": "+51977665544",
-        "rol": "Almacenero"
+        "rol": "Almacenero",
+        "password": "123456"
+      },
+      {
+        "id_usuario": 4,
+        "nombre": "Lucero",
+        "apellidos": "Jimenez",
+        "correo_electronico": "lucero@petshop.com",
+        "telefono": "",
+        "rol": "Cliente",
+        "password": "123456"
+      },
+      {
+        "id_usuario": 5,
+        "nombre": "Carmen",
+        "apellidos": "Sánchez ",
+        "correo_electronico": "Carmen@petshop.com",
+        "telefono": "",
+        "rol": "Cliente",
+        "password": "123456789"
       }
     ],
     "sesiones": [
@@ -69,7 +90,7 @@
   },
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "firstName": "Carlos",
       "lastName": "Mendoza",
       "email": "admin@petstock.com",
@@ -80,7 +101,7 @@
       "photoUrl": ""
     },
     {
-      "id": 2,
+      "id": "2",
       "firstName": "María",
       "lastName": "Delgado",
       "email": "maria.d@petstock.com",
@@ -91,7 +112,7 @@
       "photoUrl": ""
     },
     {
-      "id": 3,
+      "id": "3",
       "firstName": "Jorge",
       "lastName": "Ramos",
       "email": "jorge.r@petstock.com",
@@ -104,19 +125,19 @@
   ],
   "preferences": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 1,
       "notificationsEnabled": true,
       "darkMode": false
     },
     {
-      "id": 2,
+      "id": "2",
       "userId": 2,
       "notificationsEnabled": true,
       "darkMode": true
     },
     {
-      "id": 3,
+      "id": "3",
       "userId": 3,
       "notificationsEnabled": false,
       "darkMode": true
@@ -124,45 +145,45 @@
   ],
   "categories": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Alimentos Perro",
       "description": "Croquetas y alimento húmedo para caninos"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Alimentos Gato",
       "description": "Croquetas y sobres para felinos"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Accesorios",
       "description": "Correas, juguetes y camas"
     }
   ],
   "products": [
     {
-      "id": 101,
+      "id": "101",
       "name": "Ricocan Adulto 15kg",
       "description": "Alimento balanceado sabor carne",
-      "price": 120.0,
+      "price": 120,
       "categoryId": 1,
       "supplierId": 1,
       "active": true
     },
     {
-      "id": 102,
+      "id": "102",
       "name": "RicoCat Salmón 10kg",
       "description": "Alimento completo para gatos adultos",
-      "price": 95.0,
+      "price": 95,
       "categoryId": 2,
       "supplierId": 1,
       "active": true
     },
     {
-      "id": 103,
+      "id": "103",
       "name": "Collar Antipulgas",
       "description": "Protección para perros hasta 8 meses",
-      "price": 45.0,
+      "price": 45,
       "categoryId": 3,
       "supplierId": 2,
       "active": true
@@ -170,21 +191,21 @@
   ],
   "suppliers": [
     {
-      "id": 1,
+      "id": "1",
       "companyName": "Distribuidora PetFood S.A.C.",
       "contactName": "Luis Paredes",
       "phone": "+51911223344",
       "email": "contacto@petfood.pe"
     },
     {
-      "id": 2,
+      "id": "2",
       "companyName": "Importadora Mascotas VIP",
       "contactName": "Elena Gómez",
       "phone": "+51922334455",
       "email": "ventas@mascotasvip.pe"
     },
     {
-      "id": 3,
+      "id": "3",
       "companyName": "Nutrición Animal E.I.R.L.",
       "contactName": "Roberto Dávila",
       "phone": "+51933445566",
@@ -193,21 +214,21 @@
   ],
   "inventories": [
     {
-      "id": 1,
+      "id": "1",
       "productId": 101,
       "currentStock": 25,
       "minimumStock": 5,
       "lastUpdated": "2026-10-05T10:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "productId": 102,
       "currentStock": 3,
       "minimumStock": 5,
       "lastUpdated": "2026-10-05T11:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "productId": 103,
       "currentStock": 12,
       "minimumStock": 4,
@@ -216,21 +237,21 @@
   ],
   "stock-alerts": [
     {
-      "id": 1,
+      "id": "1",
       "productId": 102,
       "level": "critical",
       "active": true,
       "createdAt": "2026-10-05T11:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "productId": 101,
       "level": "normal",
       "active": false,
       "createdAt": "2026-10-01T08:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "productId": 103,
       "level": "preventivo",
       "active": false,
@@ -239,68 +260,68 @@
   ],
   "sales": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 2,
       "customerId": 1,
       "items": [
         {
           "productId": 101,
           "quantity": 1,
-          "unitPrice": 120.0
+          "unitPrice": 120
         }
       ],
-      "total": 120.0,
+      "total": 120,
       "paymentMethod": "cash",
       "date": "2026-10-05T10:30:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "userId": 2,
       "customerId": 2,
       "items": [
         {
           "productId": 102,
           "quantity": 1,
-          "unitPrice": 95.0
+          "unitPrice": 95
         }
       ],
-      "total": 95.0,
+      "total": 95,
       "paymentMethod": "yape",
       "date": "2026-10-05T11:15:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "userId": 1,
       "customerId": 3,
       "items": [
         {
           "productId": 103,
           "quantity": 1,
-          "unitPrice": 45.0
+          "unitPrice": 45
         }
       ],
-      "total": 45.0,
+      "total": 45,
       "paymentMethod": "card",
       "date": "2026-10-05T12:00:00Z"
     }
   ],
   "customers": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Ana Torres",
       "email": "ana.torres@gmail.com",
       "phone": "+51987654321",
       "address": "Av. Los Olivos 123"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Pedro Castillo",
       "email": "pedro.c@gmail.com",
       "phone": "+51976543210",
       "address": "Calle Las Flores 456"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Lucía Méndez",
       "email": "lucia.m@gmail.com",
       "phone": "+51965432109",
@@ -309,25 +330,26 @@
   ],
   "reports": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 1,
       "type": "Semanal de Ventas",
       "createdAt": "2026-10-05T12:00:00Z",
       "fileFormat": "PDF"
     },
     {
-      "id": 2,
+      "id": "2",
       "userId": 1,
       "type": "Rotación de Inventario",
       "createdAt": "2026-10-04T18:00:00Z",
       "fileFormat": "EXCEL"
     },
     {
-      "id": 3,
+      "id": "3",
       "userId": 2,
       "type": "Cuadre de Caja Diario",
       "createdAt": "2026-10-05T16:00:00Z",
       "fileFormat": "PDF"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

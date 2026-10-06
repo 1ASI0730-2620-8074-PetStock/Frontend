@@ -2,7 +2,7 @@
   "login": {
     "welcome": "Bienvenido a PetStock",
     "email_label": "Correo electrónico",
-    "email_placeholder": "eduardo@petstock.pe",
+    "email_placeholder": "eduardo{'@'}petstock.pe",
     "password_label": "Contraseña",
     "password_placeholder": "••••••••••••",
     "forgot_password": "¿Olvidaste tu contraseña?",
@@ -16,6 +16,22 @@
     "encrypted_connection": "Conexión cifrada de 256-bits",
     "help_center": "Centro de Ayuda",
     "terms": "Términos"
+  },
+  "register": {
+    "title": "Crear una cuenta",
+    "subtitle": "Regístrate para comenzar a gestionar tu tienda",
+    "first_name": "Nombres",
+    "first_name_placeholder": "Ingresa tus nombres",
+    "last_name": "Apellidos",
+    "last_name_placeholder": "Ingresa tus apellidos",
+    "email": "Correo electrónico",
+    "email_placeholder": "ejemplo{'@'}petshop.com",
+    "password": "Contraseña",
+    "terms_prefix": "Acepto nuestros",
+    "terms_link": "términos y condiciones",
+    "submit_button": "Registrarse →",
+    "already_have_account": "¿Ya tienes una cuenta?",
+    "login_link": "Inicia sesión"
   },
   "catalog": {
     "title": "Registrar producto",

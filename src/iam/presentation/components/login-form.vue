@@ -1,10 +1,12 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useIdentityStore } from '../../application/identity.store.js';
 
 const router = useRouter();
 const identityStore = useIdentityStore();
+const { t } = useI18n();
 
 const form = reactive({
   email: '',
@@ -51,7 +53,7 @@ const submitLogin = async () => {
         <img src="/font/logo-petstock.png" alt="PetStock Logo" class="brand-logo-img" />
       </div>
 
-      <h2 class="welcome-title">Bienvenido a PetStock</h2>
+      <h2 class="welcome-title">{{ $t('login.welcome') }}</h2>
     </div>
 
     <!-- Formulario de Login -->
@@ -62,14 +64,14 @@ const submitLogin = async () => {
 
       <!-- Campo Correo -->
       <div class="field-group">
-        <label for="email" class="field-label">Correo electrónico</label>
+        <label for="email" class="field-label">{{ $t('login.email_label') }}</label>
         <pv-icon-field iconPosition="left" class="w-full">
           <pv-input-icon class="pi pi-envelope input-icon" />
           <pv-input-text
               id="email"
               v-model="form.email"
               type="email"
-              placeholder="eduardo@petstock.pe"
+              :placeholder="$t('login.email_placeholder')"
               class="w-full"
               required
           />
@@ -79,15 +81,15 @@ const submitLogin = async () => {
       <!-- Campo Contraseña -->
       <div class="field-group">
         <div class="label-row">
-          <label for="password" class="field-label">Contraseña</label>
-          <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+          <label for="password" class="field-label">{{ $t('login.password_label') }}</label>
+          <a href="#" class="forgot-link">{{ $t('login.forgot_password') }}</a>
         </div>
         <pv-icon-field iconPosition="left" class="w-full">
           <pv-input-icon class="pi pi-lock input-icon" />
           <pv-password
               id="password"
               v-model="form.password"
-              placeholder="••••••••••••"
+              :placeholder="$t('login.password_placeholder')"
               :feedback="false"
               toggleMask
               class="w-full"
@@ -100,7 +102,7 @@ const submitLogin = async () => {
       <!-- Mantener sesión -->
       <div class="remember-group">
         <pv-checkbox id="remember" v-model="form.remember" :binary="true" />
-        <label for="remember" class="remember-label">Mantener sesión abierta en este equipo</label>
+        <label for="remember" class="remember-label">{{ $t('login.remember_me') }}</label>
       </div>
 
       <!-- Botón Iniciar Sesión -->
@@ -108,33 +110,33 @@ const submitLogin = async () => {
           type="submit"
           :loading="isLoading"
           class="submit-btn"
-          label="Iniciar sesión →"
+          :label="$t('login.submit_button')"
       />
     </form>
 
     <!-- Separador y Botones Sociales -->
     <div class="divider-container">
       <span class="divider-line"></span>
-      <span class="divider-text">O INICIA SESIÓN CON</span>
+      <span class="divider-text">{{ $t('login.divider_text') }}</span>
       <span class="divider-line"></span>
     </div>
 
     <div class="social-buttons">
-      <pv-button type="button" class="social-btn" icon="pi pi-google" label="Google" />
-      <pv-button type="button" class="social-btn" icon="pi pi-facebook" label="Facebook" />
+      <pv-button type="button" class="social-btn" icon="pi pi-google" :label="$t('login.social_google')" />
+      <pv-button type="button" class="social-btn" icon="pi pi-facebook" :label="$t('login.social_facebook')" />
     </div>
 
     <div class="register-footer">
-      <span>¿No tienes una cuenta? </span>
-      <a href="#" class="register-link">Regístrate aquí</a>
+      <span>{{ t('login.register_prompt') }} </span>
+      <router-link to="/register" class="register-link">{{ t('login.register_link') }}</router-link>
     </div>
 
     <div class="legal-footer">
-      <span>🔒 Conexión cifrada de 256-bits</span>
+      <span>🔒 {{ $t('login.encrypted_connection') }}</span>
       <span>•</span>
-      <a href="#">Centro de Ayuda</a>
+      <a href="#">{{ $t('login.help_center') }}</a>
       <span>•</span>
-      <a href="#">Términos</a>
+      <a href="#">{{ $t('login.terms') }}</a>
     </div>
   </div>
 </template>
@@ -160,7 +162,7 @@ const submitLogin = async () => {
 }
 
 .brand-logo-img {
-  height: 48px;
+  height: 150px;
   width: auto;
   object-fit: contain;
 }
