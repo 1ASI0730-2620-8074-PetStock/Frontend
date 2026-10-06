@@ -2,6 +2,7 @@
 import { onMounted, computed, ref } from 'vue'
 import { useInventoryStore } from '../../application/inventory.store.js'
 import { useCatalogStore } from '../../../catalog/application/catalog.store.js'
+import LanguageSwitcher from '@/shared/presentation/components/language-switcher.vue'
 
 const { inventarios, alertasStock, loading, error, cargarInventarios, cargarAlertasStock } = useInventoryStore()
 const { productos, categorias, cargarProductos, cargarCategorias } = useCatalogStore()
@@ -58,21 +59,22 @@ const alertasBajas = computed(() =>
 
 <template>
   <div style="max-width: 700px; margin: 0 auto; padding: 2rem;">
-    <div style="display: flex; justify-content: flex-end;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <LanguageSwitcher />
       <img src="/font/logo-petstock.png" alt="PetStock" style="height: clamp(60px, 8vw, 120px); margin-bottom: 1rem;" />
     </div>
 
-    <h1>Productos con bajo stock</h1>
+    <h1>{{ $t('inventory.title') }}</h1>
 
-    <pv-input-text v-model="busqueda" placeholder="Buscar producto..." style="width: 100%; box-sizing: border-box; margin-bottom: 1.5rem;" />
+    <pv-input-text v-model="busqueda" :placeholder="$t('inventory.search_placeholder')" style="width: 100%; box-sizing: border-box; margin-bottom: 1.5rem;" />
 
     <p v-if="loading">Cargando...</p>
     <p v-if="error">{{ error }}</p>
 
     <div v-if="alertasCriticas.length" style="margin-bottom: 2rem;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <strong style="color: #e53935;">● Alerta crítica</strong>
-        <pv-tag severity="danger" :value="`${alertasCriticas.length} producto${alertasCriticas.length > 1 ? 's' : ''} urgente${alertasCriticas.length > 1 ? 's' : ''}`" />
+        <strong style="color: #e53935;">● {{ $t('inventory.critical_alert') }}</strong>
+        <pv-tag severity="danger" :value="`${alertasCriticas.length} ${alertasCriticas.length > 1 ? $t('inventory.urgent_products') : $t('inventory.urgent_product')}`" />
       </div>
 
       <pv-card v-for="alerta in alertasCriticas" :key="alerta.id" class="alert-card critical">
@@ -87,42 +89,42 @@ const alertasBajas = computed(() =>
           <h3 style="margin: 0.5rem 0;">{{ nombreProducto(alerta.idProducto) }}</h3>
 
           <div style="display: flex; justify-content: space-between;">
-            <span>Stock actual<br /><strong style="color: #e53935;">{{ inventarioDe(alerta.idProducto)?.stockActual }} unidades</strong></span>
-            <span style="text-align: right;">Mínimo requerido<br /><strong>{{ inventarioDe(alerta.idProducto)?.umbralMinimo }} unidades</strong></span>
+            <span>{{ $t('inventory.current_stock') }}<br /><strong style="color: #e53935;">{{ inventarioDe(alerta.idProducto)?.stockActual }} {{ $t('inventory.units') }}</strong></span>
+            <span style="text-align: right;">{{ $t('inventory.min_required') }}<br /><strong>{{ inventarioDe(alerta.idProducto)?.umbralMinimo }} {{ $t('inventory.units') }}</strong></span>
           </div>
 
           <div class="progress-bar">
             <div class="progress-fill critical" :style="{ width: Math.min(porcentajeStock(alerta.idProducto), 100) + '%' }"></div>
           </div>
           <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #6b6375;">
-            <span>Faltan {{ unidadesFaltantes(alerta.idProducto) }} unidades para el umbral seguro</span>
-            <span>{{ porcentajeStock(alerta.idProducto) }}% cubierto</span>
+            <span>{{ $t('inventory.units_remaining', { count: unidadesFaltantes(alerta.idProducto) }) }}</span>
+            <span>{{ porcentajeStock(alerta.idProducto) }}% {{ $t('inventory.covered') }}</span>
           </div>
 
           <div style="display: flex; gap: 0.75rem; margin-top: 0.75rem;">
-            <pv-button label="+ Reponer" style="background: #ED6B15; border-color: #ED6B15; flex: 1;" />
-            <pv-button label="Editar" severity="secondary" outlined />
+            <pv-button :label="$t('inventory.replenish_button')" style="background: #ED6B15; border-color: #ED6B15; flex: 1;" />
+            <pv-button :label="$t('inventory.edit_button')" severity="secondary" outlined />
           </div>
         </template>
       </pv-card>
     </div>
 
     <div v-if="alertasBajas.length">
-      <strong style="color: #ED6B15;">● Stock bajo</strong>
+      <strong style="color: #ED6B15;">● {{ $t('inventory.low_stock') }}</strong>
 
       <pv-card v-for="alerta in alertasBajas" :key="alerta.id" class="alert-card">
         <template #content>
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 0.85rem; color: #6b6375;">{{ nombreCategoria(alerta.idProducto) }}</span>
-            <pv-tag severity="warn" value="Atención" />
+            <pv-tag severity="warn" :value="$t('inventory.attention')" />
           </div>
 
           <h3 style="margin: 0.5rem 0;">{{ nombreProducto(alerta.idProducto) }}</h3>
 
           <div style="display: flex; justify-content: space-between;">
-            <span>Stock actual: <strong>{{ inventarioDe(alerta.idProducto)?.stockActual }}</strong></span>
-            <span>Mínimo requerido: <strong>{{ inventarioDe(alerta.idProducto)?.umbralMinimo }}</strong></span>
-            <pv-button label="+ Reponer" style="background: #ED6B15; border-color: #ED6B15;" />
+            <span>{{ $t('inventory.current_stock') }}: <strong>{{ inventarioDe(alerta.idProducto)?.stockActual }}</strong></span>
+            <span>{{ $t('inventory.min_required') }}: <strong>{{ inventarioDe(alerta.idProducto)?.umbralMinimo }}</strong></span>
+            <pv-button :label="$t('inventory.replenish_button')" style="background: #ED6B15; border-color: #ED6B15;" />
           </div>
         </template>
       </pv-card>
