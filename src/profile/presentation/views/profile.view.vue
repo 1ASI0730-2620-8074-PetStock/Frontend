@@ -28,6 +28,13 @@ function toggleLanguage() {
 function goBack() {
   router.back();
 }
+
+/** closes the session and sends the user to the login view. */
+function signOut() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userId');
+  router.push({name: 'login'});
+}
 </script>
 
 <template>
@@ -94,6 +101,9 @@ function goBack() {
         </li>
       </ul>
     </section>
+    <!-- sign out -->
+    <pv-button :label="t('profile.sign-out')" icon="pi pi-sign-out" class="w-full"
+               :aria-label="t('profile.sign-out')" @click="signOut"/>
   </div>
 </template>
 
