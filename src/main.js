@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
+import { createPinia } from 'pinia';
 import router from '@/shared/router';
 import i18n from "./i18n.js";
 import PrimeVue from 'primevue/config';
@@ -34,6 +35,7 @@ createApp(App)
             }
         }
     })
+    .use(createPinia())
     .component('pv-input-text', InputText)
     .component('pv-password', Password)
     .component('pv-button', Button)
