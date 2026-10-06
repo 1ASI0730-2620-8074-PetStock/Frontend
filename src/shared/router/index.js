@@ -3,7 +3,7 @@ import ProductCatalogView from '@/catalog/presentation/views/product-catalog.vie
 import StockDashboardView from '@/inventory/presentation/views/stock-dashboard.view.vue'
 import LoginView from '@/iam/presentation/views/login.view.vue'
 import profileRoutes from "../../profile/presentation/profile-routes.js";
-
+import AnalyticsDashboardView from '@/analytics/presentation/views/analytics-dashboard.view.vue';
 const routes = [
     {
         path: '/',
@@ -24,6 +24,13 @@ const routes = [
         name: 'inventory',
         component: StockDashboardView
     },
+
+    {
+        path: '/analytics',
+        name: 'analytics',
+        component: AnalyticsDashboardView
+    },
+
     { path: '/profile', children: profileRoutes }
 ]
 

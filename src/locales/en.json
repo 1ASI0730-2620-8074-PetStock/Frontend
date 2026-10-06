@@ -91,5 +91,34 @@
     "success-title": "Profile updated successfully!",
     "success-detail": "Your account data has been saved.",
     "save-error": "We could not save your changes. Try again."
+  },
+
+  "analytics": {
+    "eyebrow": "ANALYTICS",
+    "title": "Reports",
+    "subtitle": "Review your sales and inventory performance.",
+    "weeklyMetrics": "WEEKLY METRICS",
+    "salesByDay": "Sales by day",
+    "weeklyTotal": "Weekly total:",
+    "highestRevenueDay": "Highest revenue day:",
+    "sales": "sales",
+    "topProducts": "Best-selling products",
+    "topThree": "Top 3 →",
+    "lowMovement": "Low movement",
+    "attention": "Attention",
+    "stock": "Stock: {count} units",
+    "inventory": {
+      "title": "General inventory",
+      "products": "Available products",
+      "inCatalog": "in catalog",
+      "categories": "Categories",
+      "active": "active"
+    },
+    "downloadPdf": "Download PDF report",
+    "pdfHint": "Use your browser's print option to save the report as a PDF.",
+    "loading": "Loading reports...",
+    "loadError": "We could not load the report information.",
+    "noProducts": "No products registered.",
+    "noInformation": "No information available."
   }
 }
