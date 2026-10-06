@@ -50,7 +50,10 @@ createApp(App)
     .use(PrimeVue, {
         ripple: true,
         theme: {
-            preset: PetStockTheme
+            preset: PetStockTheme,
+            options: {
+                darkModeSelector: false
+            }
         }
     })
     .use(createPinia())
