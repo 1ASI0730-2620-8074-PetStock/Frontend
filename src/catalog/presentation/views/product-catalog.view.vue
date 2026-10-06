@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useCatalogStore } from '../../application/catalog.store.js'
+import ProductForm from '../components/product-form.vue'
 
 const { productos, categorias, loading, error, cargarProductos, cargarCategorias } = useCatalogStore()
 
@@ -13,6 +14,8 @@ onMounted(() => {
 <template>
   <div>
     <h1>Catálogo de Productos</h1>
+
+    <ProductForm />
 
     <p v-if="loading">Cargando...</p>
     <p v-if="error">{{ error }}</p>

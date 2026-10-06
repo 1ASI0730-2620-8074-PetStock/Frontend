@@ -27,12 +27,18 @@ export function useCatalogStore() {
         categorias.value = data.map(c => new Category(c))
     }
 
+    async function agregarProducto(nuevoProducto) {
+        const creado = await CatalogApi.createProducto(nuevoProducto)
+        productos.value.push(new Product(creado))
+    }
+
     return {
         productos,
         categorias,
         loading,
         error,
         cargarProductos,
-        cargarCategorias
+        cargarCategorias,
+        agregarProducto
     }
 }
