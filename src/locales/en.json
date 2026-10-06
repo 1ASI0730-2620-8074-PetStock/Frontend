@@ -55,5 +55,41 @@
     "attention": "Attention",
     "replenish_button": "+ Replenish",
     "edit_button": "Edit"
+  },
+  "profile": {
+    "title": "My profile",
+    "back": "Go back",
+    "active": "Active",
+    "edit": "Edit profile",
+    "load-error": "We could not load your profile. Try again later.",
+    "settings": "Settings",
+    "language": "Language",
+    "language-value": "English",
+    "notifications": "Notifications",
+    "notifications-detail": "Manage your alerts and notifications",
+    "business": "Business data",
+    "business-detail": "Your store information",
+    "help": "Help center",
+    "help-detail": "Find answers and support",
+    "sign-out": "Sign out"
+  },
+  "edit-profile": {
+    "title": "Edit profile",
+    "first-name": "First name",
+    "first-name-placeholder": "Enter your first name",
+    "last-name": "Last name",
+    "last-name-placeholder": "Enter your last name",
+    "email": "Email",
+    "email-placeholder": "example{'@'}petstock.pe",
+    "password": "Password",
+    "password-placeholder": "Enter a new password",
+    "password-hint": "Leave it empty to keep your current password",
+    "required": "This field cannot be empty",
+    "invalid-email": "Enter a valid email",
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "success-title": "Profile updated successfully!",
+    "success-detail": "Your account data has been saved.",
+    "save-error": "We could not save your changes. Try again."
   }
 }

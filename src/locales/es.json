@@ -55,5 +55,41 @@
     "attention": "Atención",
     "replenish_button": "+ Reponer",
     "edit_button": "Editar"
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "back": "Regresar",
+    "active": "Activo",
+    "edit": "Editar perfil",
+    "load-error": "No pudimos cargar tu perfil. Inténtalo más tarde.",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "language-value": "Español",
+    "notifications": "Notificaciones",
+    "notifications-detail": "Gestiona tus alertas y notificaciones",
+    "business": "Datos del negocio",
+    "business-detail": "Información de tu tienda",
+    "help": "Centro de ayuda",
+    "help-detail": "Encuentra respuestas y soporte",
+    "sign-out": "Cerrar sesión"
+  },
+  "edit-profile": {
+    "title": "Editar perfil",
+    "first-name": "Nombres",
+    "first-name-placeholder": "Ingresa tus nombres",
+    "last-name": "Apellidos",
+    "last-name-placeholder": "Ingresa tus apellidos",
+    "email": "Correo electrónico",
+    "email-placeholder": "ejemplo{'@'}petstock.pe",
+    "password": "Contraseña",
+    "password-placeholder": "Ingresa una nueva contraseña",
+    "password-hint": "Déjala vacía para mantener tu contraseña actual",
+    "required": "Este campo no puede estar vacío",
+    "invalid-email": "Ingresa un correo válido",
+    "save": "Guardar cambios",
+    "cancel": "Cancelar",
+    "success-title": "¡Perfil actualizado con éxito!",
+    "success-detail": "Los datos de tu cuenta han sido guardados correctamente.",
+    "save-error": "No pudimos guardar tus cambios. Inténtalo de nuevo."
   }
 }

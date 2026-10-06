@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ProductCatalogView from '@/catalog/presentation/views/product-catalog.view.vue'
 import StockDashboardView from '@/inventory/presentation/views/stock-dashboard.view.vue'
 import LoginView from '@/iam/presentation/views/login.view.vue'
+import profileRoutes from "../../profile/presentation/profile-routes.js";
 
 const routes = [
     {
@@ -22,7 +23,8 @@ const routes = [
         path: '/inventory',
         name: 'inventory',
         component: StockDashboardView
-    }
+    },
+    { path: '/profile', children: profileRoutes }
 ]
 
 const router = createRouter({
