@@ -1,0 +1,53 @@
+:root {
+  --primary-color: #ED6B15;
+  --primary-hover: #D95A0B;
+  --secondary-color: #825D38;
+  --beige-color: #E5D0B1;
+  --bg-cream: #F8F5EF;
+  --text-dark: #2F2019;
+  --text-muted: #786D65;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .brand-title {
+  font-family: var(--font-heading);
+}
+
+/* Personalización de inputs de PrimeVue para el estilo de PetStock */
+.p-inputtext, .p-password-input {
+  background-color: #FFF7F2 !important;
+  border: 1px solid #F3E5DC !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1rem !important;
+  font-family: var(--font-body) !important;
+  color: var(--text-dark) !important;
+}
+
+.p-inputtext:focus, .p-password-input:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(237, 107, 21, 0.2) !important;
+}
+
+.p-checkbox-box {
+  border-radius: 6px !important;
+}
+
+.p-checkbox-checked .p-checkbox-box {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
