@@ -11,26 +11,22 @@ const profileStore = useProfileStore();
 const identityStore = useIdentityStore();
 
 onMounted(() => {
-  // the id of the signed-in user comes from the iam bounded context
+  // The id of the signed-in user comes from the IAM bounded context
   profileStore.fetchProfile(identityStore.currentUser.id);
 });
 
-/** opens the edit profile view. */
+/** Opens the edit profile view. */
 function goToEditProfile() {
   router.push({name: 'profile-edit'});
 }
 
-/** changes the language of the app between english and spanish. */
+/** Changes the language of the app between English and Spanish. */
 function toggleLanguage() {
   locale.value = locale.value === 'en' ? 'es' : 'en';
+  localStorage.setItem('locale', locale.value);
 }
 
-/** returns to the previous page. */
-function goBack() {
-  router.back();
-}
-
-/** closes the session (iam) and sends the user to the login view. */
+/** Closes the session (IAM) and sends the user to the login view. */
 function signOut() {
   identityStore.logout();
   router.push({name: 'login'});
@@ -38,18 +34,14 @@ function signOut() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="profile-page">
     <header class="page-header">
-      <div class="title-row">
-        <pv-button icon="pi pi-angle-left" rounded outlined class="back-button"
-                   :aria-label="t('profile.back')" @click="goBack"/>
-        <h1>{{ t('profile.title') }}</h1>
-      </div>
-      <img src="/font/logo-petstock.png" alt="PetStock" class="brand-logo"/>
+      <h1>{{ t('profile.title') }}</h1>
+      <p>{{ t('profile.subtitle') }}</p>
     </header>
 
     <div class="profile-layout">
-      <!-- profile card -->
+      <!-- Profile card -->
       <section class="card profile-card" :aria-label="t('profile.title')">
         <template v-if="profileStore.profile">
           <pv-avatar v-if="profileStore.profile.photoUrl" :image="profileStore.profile.photoUrl"
@@ -66,7 +58,7 @@ function signOut() {
         <p v-else-if="profileStore.errors.length" class="error" role="alert">{{ t('profile.load-error') }}</p>
       </section>
 
-      <!-- settings -->
+      <!-- Settings -->
       <section class="card settings" :aria-label="t('profile.settings')">
         <h3>{{ t('profile.settings') }}</h3>
         <ul>
@@ -105,7 +97,7 @@ function signOut() {
         </ul>
       </section>
 
-      <!-- sign out (wireflow 07) -->
+      <!-- Sign out (Wireflow 07) -->
       <pv-button :label="t('profile.sign-out')" icon="pi pi-sign-out" class="primary-button sign-out"
                  :aria-label="t('profile.sign-out')" @click="signOut"/>
     </div>
@@ -113,35 +105,19 @@ function signOut() {
 </template>
 
 <style scoped>
-.page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem 2.5rem;
-}
-
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 1.5rem;
 }
 
-.title-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.page-header h1 {
+  font-size: 2rem;
 }
 
-.brand-logo {
-  height: 56px;
+.page-header p {
+  color: var(--secondary-color);
 }
 
-.back-button {
-  color: var(--primary-color);
-  border-color: var(--beige-color);
-}
-
-/* desktop: card on the left, settings on the right */
+/* Desktop: card on the left, settings on the right */
 .profile-layout {
   display: grid;
   grid-template-columns: 340px 1fr;
@@ -154,8 +130,9 @@ function signOut() {
 
 .card {
   background: #FFFFFF;
-  border: 1px solid #F3E5DC;
-  border-radius: 16px;
+  border: 1px solid #EEDFC8;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(47, 32, 25, 0.03);
   padding: 1.5rem;
 }
 
@@ -199,12 +176,14 @@ function signOut() {
   margin-bottom: 1rem;
 }
 
+/* Same orange button used in the sales module */
 .primary-button {
   width: 100%;
   background: var(--primary-color);
   border-color: var(--primary-color);
   border-radius: 12px;
-  font-weight: 700;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
 }
 
 .primary-button:hover {
@@ -269,12 +248,8 @@ function signOut() {
   color: #D32F2F;
 }
 
-/* tablet and mobile: one column */
+/* Tablet and mobile: one column */
 @media (max-width: 900px) {
-  .page {
-    padding: 1.5rem 1rem;
-  }
-
   .profile-layout {
     grid-template-columns: 1fr;
     grid-template-areas:
