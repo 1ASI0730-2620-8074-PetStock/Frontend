@@ -72,10 +72,10 @@ onMounted(async () => {
           <i class="pi pi-th-large"></i>
           <span>{{ t('dashboard.title', 'Dashboard (Inicio)') }}</span>
         </a>
-        <a href="#" class="nav-item">
-          <i class="pi pi-box"></i>
-          <span>{{ t('dashboard.register_product', 'Registrar Producto') }}</span>
-        </a>
+        <        <router-link to="/catalog" class="nav-item">
+        <i class="pi pi-box"></i>
+        <span>{{ t('dashboard.register_product', 'Registrar Producto') }}</span>
+      </router-link>
         <a href="#" class="nav-item">
           <i class="pi pi-shopping-bag"></i>
           <span>{{ t('dashboard.register_sale', 'Registrar Venta') }}</span>
@@ -84,10 +84,10 @@ onMounted(async () => {
           <i class="pi pi-file"></i>
           <span>{{ t('dashboard.reports', 'Reportes') }}</span>
         </a>
-        <a href="#" class="nav-item">
-          <i class="pi pi-exclamation-triangle"></i>
-          <span>{{ t('dashboard.low_stock', 'Bajo Stock') }}</span>
-        </a>
+        <        <router-link to="/inventory" class="nav-item">
+        <i class="pi pi-exclamation-triangle"></i>
+        <span>{{ t('dashboard.low_stock', 'Bajo Stock') }}</span>
+      </router-link>
       </nav>
     </aside>
 
