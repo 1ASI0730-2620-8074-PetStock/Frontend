@@ -1,102 +1,13 @@
 {
-  "iam": {
-    "usuarios": [
-      {
-        "id_usuario": 1,
-        "nombre": "Carlos",
-        "apellidos": "Mendoza",
-        "correo_electronico": "admin@petstock.com",
-        "telefono": "+51999888777",
-        "rol": "Admin",
-        "password": "123456"
-      },
-      {
-        "id_usuario": 2,
-        "nombre": "María",
-        "apellidos": "Delgado",
-        "correo_electronico": "maria.d@petstock.com",
-        "telefono": "+51988776655",
-        "rol": "Vendedor",
-        "password": "123456"
-      },
-      {
-        "id_usuario": 3,
-        "nombre": "Jorge",
-        "apellidos": "Ramos",
-        "correo_electronico": "jorge.r@petstock.com",
-        "telefono": "+51977665544",
-        "rol": "Almacenero",
-        "password": "123456"
-      },
-      {
-        "id_usuario": 4,
-        "nombre": "Lucero",
-        "apellidos": "Jimenez",
-        "correo_electronico": "lucero@petshop.com",
-        "telefono": "",
-        "rol": "Cliente",
-        "password": "123456"
-      },
-      {
-        "id_usuario": 5,
-        "nombre": "Carmen",
-        "apellidos": "Sánchez ",
-        "correo_electronico": "Carmen@petshop.com",
-        "telefono": "",
-        "rol": "Cliente",
-        "password": "123456789"
-      }
-    ],
-    "sesiones": [
-      {
-        "id_sesion": 1,
-        "id_usuario": 1,
-        "token": "bearer-token-111111",
-        "expira_en": "2026-10-06T18:00:00Z"
-      },
-      {
-        "id_sesion": 2,
-        "id_usuario": 2,
-        "token": "bearer-token-222222",
-        "expira_en": "2026-10-06T18:00:00Z"
-      },
-      {
-        "id_sesion": 3,
-        "id_usuario": 3,
-        "token": "bearer-token-333333",
-        "expira_en": "2026-10-06T18:00:00Z"
-      }
-    ],
-    "preferencias": [
-      {
-        "id_preferencia": 1,
-        "id_usuario": 1,
-        "notificaciones_activas": true,
-        "modo_oscuro": false
-      },
-      {
-        "id_preferencia": 2,
-        "id_usuario": 2,
-        "notificaciones_activas": true,
-        "modo_oscuro": true
-      },
-      {
-        "id_preferencia": 3,
-        "id_usuario": 3,
-        "notificaciones_activas": false,
-        "modo_oscuro": true
-      }
-    ]
-  },
   "users": [
     {
       "id": "1",
-      "firstName": "Carlos",
-      "lastName": "Mendoza",
-      "email": "admin@petstock.com",
-      "password": "password123",
+      "firstName": "Eduardo",
+      "lastName": "Salazar",
+      "email": "eduardo@petstock.pe",
+      "password": "123456",
       "phone": "+51999888777",
-      "role": "Admin",
+      "role": "Administrador",
       "status": "Active",
       "photoUrl": ""
     },
@@ -105,7 +16,7 @@
       "firstName": "María",
       "lastName": "Delgado",
       "email": "maria.d@petstock.com",
-      "password": "password123",
+      "password": "123456",
       "phone": "+51988776655",
       "role": "Vendedor",
       "status": "Active",
@@ -116,9 +27,31 @@
       "firstName": "Jorge",
       "lastName": "Ramos",
       "email": "jorge.r@petstock.com",
-      "password": "password123",
+      "password": "123456",
       "phone": "+51977665544",
       "role": "Almacenero",
+      "status": "Active",
+      "photoUrl": ""
+    },
+    {
+      "id": "4",
+      "firstName": "Lucero",
+      "lastName": "Jimenez",
+      "email": "lucero@petshop.com",
+      "password": "123456",
+      "phone": "",
+      "role": "Administrador",
+      "status": "Active",
+      "photoUrl": ""
+    },
+    {
+      "id": "5",
+      "firstName": "Carmen",
+      "lastName": "Sánchez",
+      "email": "carmen@petshop.com",
+      "password": "123456789",
+      "phone": "",
+      "role": "Administrador",
       "status": "Active",
       "photoUrl": ""
     }

@@ -26,14 +26,14 @@ function parseSaleDate(value) {
 function getSaleItems(sale) {
     if (Array.isArray(sale.items) && sale.items.length) {
         return sale.items.map(item => ({
-            productId: Number(item.productId),
+            productId: String(item.productId),
             quantity: Number(item.quantity || 0)
         }));
     }
 
     if (sale.productId != null) {
         return [{
-            productId: Number(sale.productId),
+            productId: String(sale.productId),
             quantity: Number(sale.quantity || 0)
         }];
     }
@@ -123,7 +123,7 @@ export class ReportAssembler {
             const items = getSaleItems(sale);
 
             items.forEach(item => {
-                if (!Number.isFinite(item.productId)) return;
+                if (!item.productId) return;
 
                 const currentQuantity =
                     productSales.get(item.productId) || 0;
@@ -137,7 +137,7 @@ export class ReportAssembler {
 
         const inventoryByProduct = new Map(
             inventories.map(inventory => [
-                Number(inventory.productId),
+                String(inventory.productId),
                 inventory
             ])
         );
@@ -183,7 +183,7 @@ export class ReportAssembler {
                 name: product.name,
                 subtitle: product.description || "",
                 quantity:
-                    productSales.get(Number(product.id)) || 0
+                    productSales.get(String(product.id)) || 0
             }))
             .sort((a, b) => {
                 if (b.quantity !== a.quantity) {
@@ -198,7 +198,7 @@ export class ReportAssembler {
             .filter(product => product.active !== false)
             .map(product => {
                 const inventory = inventoryByProduct.get(
-                    Number(product.id)
+                    String(product.id)
                 );
 
                 return {
@@ -208,7 +208,7 @@ export class ReportAssembler {
                         inventory?.currentStock || 0
                     ),
                     quantity:
-                        productSales.get(Number(product.id)) || 0
+                        productSales.get(String(product.id)) || 0
                 };
             })
             .sort((a, b) => {

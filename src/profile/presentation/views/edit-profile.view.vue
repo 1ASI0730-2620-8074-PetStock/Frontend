@@ -15,15 +15,15 @@ const saved = ref(false);
 const saveError = ref(false);
 
 onMounted(() => {
-  // if the user opens /profile/edit directly, the profile is not loaded yet
+  // If the user opens /profile/edit directly, the profile is not loaded yet
   if (!profileStore.profile) {
     profileStore.fetchProfile(identityStore.currentUser.id);
   }
 });
 
 /**
- * receives the data from the form and saves it.
- * @param {{profile: object, password: string}} data - edited profile and new password.
+ * Receives the data from the form and saves it.
+ * @param {{profile: Object, password: string}} data - Edited profile and new password.
  */
 function saveProfile(data) {
   saved.value = false;
@@ -31,28 +31,33 @@ function saveProfile(data) {
   profileStore.updateProfile(data.profile, data.password).then(ok => {
     saved.value = ok;
     saveError.value = !ok;
+    // The name in the top bar (IAM session) is updated too
+    if (ok) {
+      identityStore.updateCurrentUser({
+        name: data.profile.firstName,
+        lastName: data.profile.lastName,
+        email: data.profile.email
+      });
+    }
   });
 }
 
-/** returns to "my profile". */
+/** Returns to "My profile". */
 function goBack() {
   router.push({name: 'profile'});
 }
 </script>
 
 <template>
-  <div class="page">
+  <div class="edit-profile-page">
     <header class="page-header">
-      <div class="title-row">
-        <pv-button icon="pi pi-angle-left" rounded outlined class="back-button"
-                   :aria-label="t('profile.back')" @click="goBack"/>
-        <h1>{{ t('edit-profile.title') }}</h1>
-      </div>
-      <img src="/font/logo-petstock.png" alt="PetStock" class="brand-logo"/>
+      <pv-button icon="pi pi-angle-left" rounded outlined class="back-button"
+                 :aria-label="t('profile.back')" @click="goBack"/>
+      <h1>{{ t('edit-profile.title') }}</h1>
     </header>
 
     <div v-if="profileStore.profile" class="edit-layout">
-      <!-- left: photo and current data -->
+      <!-- Left: photo and current data -->
       <section class="card photo-card" :aria-label="profileStore.profile.fullName">
         <pv-avatar v-if="profileStore.profile.photoUrl" :image="profileStore.profile.photoUrl"
                    shape="circle" class="avatar" :aria-label="profileStore.profile.fullName"/>
@@ -62,7 +67,7 @@ function goBack() {
         <p class="email">{{ profileStore.profile.email }}</p>
       </section>
 
-      <!-- right: messages and form -->
+      <!-- Right: messages and form -->
       <section class="card form-card">
         <div v-if="saved" class="success-message" role="status">
           <i class="pi pi-check-circle" aria-hidden="true"></i>
@@ -80,35 +85,24 @@ function goBack() {
 </template>
 
 <style scoped>
-.page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem 2.5rem;
-}
-
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.title-row {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.brand-logo {
-  height: 56px;
+.page-header h1 {
+  font-size: 2rem;
 }
 
 .back-button {
   color: var(--primary-color);
   border-color: var(--beige-color);
+  background: #FFFFFF;
 }
 
-/* desktop: photo on the left, form on the right */
+/* Desktop: photo on the left, form on the right */
 .edit-layout {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -118,8 +112,9 @@ function goBack() {
 
 .card {
   background: #FFFFFF;
-  border: 1px solid #F3E5DC;
-  border-radius: 16px;
+  border: 1px solid #EEDFC8;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(47, 32, 25, 0.03);
   padding: 1.5rem;
 }
 
@@ -170,12 +165,8 @@ function goBack() {
   margin-bottom: 1rem;
 }
 
-/* tablet and mobile: one column */
+/* Tablet and mobile: one column */
 @media (max-width: 900px) {
-  .page {
-    padding: 1.5rem 1rem;
-  }
-
   .edit-layout {
     grid-template-columns: 1fr;
   }

@@ -152,8 +152,8 @@ function onSubmit() {
   background: var(--primary-color);
   border-color: var(--primary-color);
   border-radius: 12px;
-  font-weight: 700;
-  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
 }
 
 .save-button:hover {

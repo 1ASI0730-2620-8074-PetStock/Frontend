@@ -53,6 +53,10 @@ export const useSalesStore = defineStore('sales', () => {
                 body: JSON.stringify(saleEntity)
             });
             const created = await response.json();
+            // Descuenta del inventario cada producto vendido
+            for (const item of saleEntity.items || []) {
+                await salesApi.decreaseStock(item.productId, item.quantity);
+            }
             sales.value.unshift(created);
             return created;
         } catch (error) {

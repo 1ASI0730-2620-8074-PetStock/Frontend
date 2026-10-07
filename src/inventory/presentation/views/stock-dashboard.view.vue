@@ -2,7 +2,6 @@
 import { onMounted, computed, ref } from 'vue'
 import { useInventoryStore } from '../../application/inventory.store.js'
 import { useCatalogStore } from '../../../catalog/application/catalog.store.js'
-import LanguageSwitcher from '@/shared/presentation/components/language-switcher.vue'
 
 const { inventarios, alertasStock, loading, error, cargarInventarios, cargarAlertasStock } = useInventoryStore()
 const { productos, categorias, cargarProductos, cargarCategorias } = useCatalogStore()
@@ -59,10 +58,6 @@ const alertasBajas = computed(() =>
 
 <template>
   <div style="max-width: 700px; margin: 0 auto; padding: 2rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <img src="/font/logo-petstock.png" alt="PetStock" style="height: clamp(60px, 8vw, 120px); margin-bottom: 1rem;" />
-      <LanguageSwitcher />
-    </div>
 
     <h1>{{ $t('inventory.title') }}</h1>
 
