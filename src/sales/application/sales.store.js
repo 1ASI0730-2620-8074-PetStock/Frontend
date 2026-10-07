@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import salesApi from '../infrastructure/sales-api.js';
 
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
 export const useSalesStore = defineStore('sales', () => {
     const sales = ref([]);
     const products = ref([]);
@@ -13,10 +15,10 @@ export const useSalesStore = defineStore('sales', () => {
         loading.value = true;
         try {
             const [prodRes, invRes, salesRes, custRes] = await Promise.all([
-                salesApi.getProducts ? salesApi.getProducts() : fetch('http://localhost:3000/products').then(r => r.json()).catch(() => []),
-                salesApi.getInventories ? salesApi.getInventories() : fetch('http://localhost:3000/inventories').then(r => r.json()).catch(() => []),
-                salesApi.getSales ? salesApi.getSales() : fetch('http://localhost:3000/sales').then(r => r.json()).catch(() => []),
-                fetch('http://localhost:3000/customers').then(r => r.json()).catch(() => [])
+                salesApi.getProducts ? salesApi.getProducts() : fetch(`${API_URL}/products`).then(r => r.json()).catch(() => []),
+                salesApi.getInventories ? salesApi.getInventories() : fetch(`${API_URL}/inventories`).then(r => r.json()).catch(() => []),
+                salesApi.getSales ? salesApi.getSales() : fetch(`${API_URL}/sales`).then(r => r.json()).catch(() => []),
+                fetch(`${API_URL}/customers`).then(r => r.json()).catch(() => [])
             ]);
 
             const invMap = {};
@@ -47,16 +49,18 @@ export const useSalesStore = defineStore('sales', () => {
     async function registerSale(saleEntity) {
         submitting.value = true;
         try {
-            const response = await fetch('http://localhost:3000/sales', {
+            const response = await fetch(`${API_URL}/sales`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(saleEntity)
             });
             const created = await response.json();
+
             // Descuenta del inventario cada producto vendido
             for (const item of saleEntity.items || []) {
                 await salesApi.decreaseStock(item.productId, item.quantity);
             }
+
             sales.value.unshift(created);
             return created;
         } catch (error) {
@@ -69,7 +73,7 @@ export const useSalesStore = defineStore('sales', () => {
 
     async function addCustomer(newCustomer) {
         try {
-            const response = await fetch('http://localhost:3000/customers', {
+            const response = await fetch(`${API_URL}/customers`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newCustomer)
@@ -88,7 +92,7 @@ export const useSalesStore = defineStore('sales', () => {
     async function deleteSale(id) {
         submitting.value = true;
         try {
-            await fetch(`http://localhost:3000/sales/${id}`, {
+            await fetch(`${API_URL}/sales/${id}`, {
                 method: 'DELETE'
             });
             sales.value = sales.value.filter(s => String(s.id) !== String(id));
