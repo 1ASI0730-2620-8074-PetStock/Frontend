@@ -50,25 +50,25 @@ function coincideBusqueda(idProducto) {
 }
 
 const alertasCriticas = computed(() =>
-    alertasStock.value.filter(a => a.nivelAlerta === 'Crítico' && a.estaActiva && coincideBusqueda(a.idProducto))
+    alertasStock.value.filter(a => a.nivelAlerta === 'critical' && a.estaActiva && coincideBusqueda(a.idProducto))
 )
 const alertasBajas = computed(() =>
-    alertasStock.value.filter(a => a.nivelAlerta !== 'Crítico' && a.estaActiva && coincideBusqueda(a.idProducto))
+    alertasStock.value.filter(a => a.nivelAlerta !== 'critical' && a.estaActiva && coincideBusqueda(a.idProducto))
 )
 </script>
 
 <template>
   <div style="max-width: 700px; margin: 0 auto; padding: 2rem;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-      <LanguageSwitcher />
       <img src="/font/logo-petstock.png" alt="PetStock" style="height: clamp(60px, 8vw, 120px); margin-bottom: 1rem;" />
+      <LanguageSwitcher />
     </div>
 
     <h1>{{ $t('inventory.title') }}</h1>
 
     <pv-input-text v-model="busqueda" :placeholder="$t('inventory.search_placeholder')" style="width: 100%; box-sizing: border-box; margin-bottom: 1.5rem;" />
 
-    <p v-if="loading">Cargando...</p>
+    <p v-if="loading">{{ $t('inventory.loading') }}</p>
     <p v-if="error">{{ error }}</p>
 
     <div v-if="alertasCriticas.length" style="margin-bottom: 2rem;">
@@ -81,7 +81,7 @@ const alertasBajas = computed(() =>
         <template #content>
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-              <pv-tag severity="danger" :value="`CRÍTICO -${100 - porcentajeStock(alerta.idProducto)}%`" />
+              <pv-tag severity="danger" :value="`${$t('inventory.critical_tag')} -${100 - porcentajeStock(alerta.idProducto)}%`" />
               <span style="font-size: 0.85rem; color: #6b6375;">{{ nombreCategoria(alerta.idProducto) }}</span>
             </div>
           </div>
