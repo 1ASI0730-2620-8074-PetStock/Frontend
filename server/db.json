@@ -260,21 +260,6 @@
   ],
   "sales": [
     {
-      "id": "1",
-      "userId": 2,
-      "customerId": 1,
-      "items": [
-        {
-          "productId": 101,
-          "quantity": 1,
-          "unitPrice": 120
-        }
-      ],
-      "total": 120,
-      "paymentMethod": "cash",
-      "date": "2026-10-05T10:30:00Z"
-    },
-    {
       "id": "2",
       "userId": 2,
       "customerId": 2,
@@ -305,26 +290,20 @@
       "date": "2026-10-05T12:00:00Z"
     },
     {
-      "id": "fDe99coAmQA",
-      "productId": "103",
-      "productName": "Collar Antipulgas",
-      "quantity": 2,
+      "id": "VNdebtTpgo0",
+      "userId": 2,
       "customerId": "1",
       "customerName": "Ana Torres",
-      "date": "2026-10-07",
-      "total": 90,
-      "userId": 1
-    },
-    {
-      "id": "DGYeXN7lGdM",
-      "productId": "101",
-      "productName": "Ricocan Adulto 15kg",
-      "quantity": 2,
-      "customerId": "2",
-      "customerName": "Pedro Castillo",
-      "date": "2026-10-07",
-      "total": 240,
-      "userId": 1
+      "items": [
+        {
+          "productId": "103",
+          "quantity": 5,
+          "unitPrice": 45
+        }
+      ],
+      "total": 225,
+      "paymentMethod": "yape",
+      "date": "2026-10-07"
     }
   ],
   "customers": [
