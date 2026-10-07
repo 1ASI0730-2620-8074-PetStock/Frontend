@@ -3,9 +3,11 @@ import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import http from '@/shared/infrastructure/http-common.js';
 import { useIdentityStore } from '@/iam/application/identity.store.js';
+import { useAnalyticsStore } from '@/analytics/application/analytics.store.js';
 
 const { t } = useI18n();
 const identityStore = useIdentityStore();
+const analyticsStore = useAnalyticsStore();
 
 // Nombre del usuario que inició sesión
 const firstName = computed(() => identityStore.currentUser?.name || '');
@@ -14,21 +16,39 @@ const products = ref([]);
 const inventories = ref([]);
 const sales = ref([]);
 const lowStockProducts = ref([]);
+const report = analyticsStore.report;
 
 // Métricas del Dashboard
 const totalStock = computed(() => inventories.value.reduce((acc, curr) => acc + (curr.currentStock || 0), 0));
 const salesToday = computed(() => sales.value.reduce((acc, curr) => acc + (curr.total || 0), 0));
 
-// Barras del gráfico semanal (estático)
-const weekBars = [
-  { day: 'dashboard.days.mon', height: 50 },
-  { day: 'dashboard.days.tue', height: 65 },
-  { day: 'dashboard.days.wed', height: 55 },
-  { day: 'dashboard.days.thu', height: 70 },
-  { day: 'dashboard.days.fri', height: 95, active: true },
-  { day: 'dashboard.days.sat', height: 80 },
-  { day: 'dashboard.days.sun', height: 45 }
-];
+
+const weekBars = computed(() => {
+  const sales = report.value?.weeklySales || [];
+  const maxAmount = Math.max(...sales.map(item => Number(item.amount || 0)), 1);
+
+  const days = [
+    'dashboard.days.mon',
+    'dashboard.days.tue',
+    'dashboard.days.wed',
+    'dashboard.days.thu',
+    'dashboard.days.fri',
+    'dashboard.days.sat',
+    'dashboard.days.sun'
+  ];
+
+  return days.map((day, index) => {
+    const item = sales[index];
+
+    return {
+      day,
+      amount: Number(item?.amount || 0),
+      height: item ? Math.max(
+              (Number(item.amount || 0) / maxAmount) * 100, item.amount > 0 ? 8 : 2) : 2,
+      active: Boolean(item?.isPeak)
+    };
+  });
+});
 
 onMounted(async () => {
   try {
@@ -52,6 +72,7 @@ onMounted(async () => {
             currentStock: inv.currentStock
           };
         });
+      await analyticsStore.loadDashboard();
   } catch (error) {
     console.error('Error al cargar datos:', error);
   }
@@ -125,7 +146,14 @@ onMounted(async () => {
 
         <div class="bars-chart">
           <div v-for="bar in weekBars" :key="bar.day" class="bar-column">
-            <div class="bar-fill" :class="{ active: bar.active }" :style="{ height: bar.height + '%' }"></div>
+        <span class="bar-value">
+            S/ {{ bar.amount }}
+        </span>
+            <div class="bar-area">
+              <div class="bar-fill" :class="{ active: bar.active }" :style="{ height: bar.height + '%' }"
+              ></div>
+            </div>
+
             <span>{{ t(bar.day) }}</span>
           </div>
         </div>
@@ -255,21 +283,41 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  gap: 0.75rem;
   height: 180px;
   padding-top: 1rem;
 }
 .bar-column {
   display: flex;
+  flex:1;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  min-width: 0;
   height: 100%;
   justify-content: flex-end;
 }
+
+.bar-value {
+  margin-bottom: 0.35rem;
+  color: #766b62;
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.bar-area {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 75%;
+}
+
 .bar-fill {
-  width: 38px;
+  width: min(38px, 65%);
+  min-height: 3px;
+  border-radius: 6px 6px 0 0;
   background-color: #E5D0B1;
-  border-radius: 6px;
+  transition: height 0.3s ease;
 }
 .bar-fill.active {
   background-color: #ED6B15;
