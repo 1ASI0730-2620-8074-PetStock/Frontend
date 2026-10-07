@@ -1,66 +1,198 @@
 <script setup>
+import { ref } from 'vue';
+import { useSalesStore } from '../../application/sales.store.js';
+import './sale-history-list.css';
+
+const salesStore = useSalesStore();
+
 defineProps({
   sales: { type: Array, default: () => [] }
 });
+
+const selectedSale = ref(null);
+const showDetailModal = ref(false);
+const deleteMessage = ref('');
+
+function openDetail(sale) {
+  selectedSale.value = sale;
+  showDetailModal.value = true;
+}
+
+function closeDetail() {
+  showDetailModal.value = false;
+  selectedSale.value = null;
+}
+
+async function eliminarVenta(id) {
+  try {
+    await salesStore.deleteSale(id);
+    deleteMessage.value = '¡Venta eliminada del historial con éxito!';
+    setTimeout(() => {
+      deleteMessage.value = '';
+    }, 4000);
+  } catch (e) {
+    alert('No se pudo eliminar la venta del servidor.');
+  }
+}
+
+function getCustomerName(customerId) {
+  const cust = salesStore.customers.find(c => String(c.id) === String(customerId));
+  return cust ? cust.name : 'Cliente General';
+}
+
+function getInitials(name) {
+  if (!name) return 'C';
+  const parts = name.trim().split(' ');
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
+}
+
+function getProductName(productId) {
+  const prod = salesStore.products.find(p => String(p.id) === String(productId));
+  return prod ? prod.name : `Producto ID: ${productId}`;
+}
+
+function formatDateTime(dateString) {
+  if (!dateString) return 'Fecha no disponible';
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    return date.toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch (e) {
+    return dateString;
+  }
+}
+
+function getPaymentMethodLabel(method) {
+  if (!method) return 'Efectivo';
+  const lower = String(method).toLowerCase().trim();
+  if (lower === 'yape') return 'Yape';
+  if (lower === 'card' || lower === 'tarjeta') return 'Tarjeta';
+  if (lower === 'cash' || lower === 'efectivo') return 'Efectivo';
+  return method;
+}
+
+function getTotalQuantity(items) {
+  if (!items || !Array.isArray(items)) return 1;
+  return items.reduce((acc, i) => acc + (Number(i.quantity) || 0), 0);
+}
 </script>
 
 <template>
-  <div class="history-list-card">
-    <div v-if="sales.length === 0" class="empty-state">
-      <i class="pi pi-inbox"></i>
-      <p>{{ $t('sales.no_sales') }}</p>
+  <div class="history-container">
+    <div v-if="deleteMessage" class="success-banner-delete">
+      <i class="pi pi-check-circle"></i>
+      <span>{{ deleteMessage }}</span>
     </div>
 
-    <div v-for="sale in sales" :key="sale.id" class="history-card-item">
-      <div class="history-card-header">
-        <div class="client-badge-initial">
-          {{ sale.customerName ? sale.customerName[0].toUpperCase() : 'C' }}
-        </div>
-        <div class="client-info">
-          <strong>{{ sale.customerName || 'Cliente General' }}</strong>
-          <span class="sale-date-text"><i class="pi pi-clock"></i> {{ sale.date }}</span>
-        </div>
-        <span class="sale-amount-badge">S/ {{ Number(sale.total || 0).toFixed(2) }}</span>
+    <div class="history-list-card">
+      <div v-if="sales.length === 0" class="empty-state">
+        <i class="pi pi-inbox"></i>
+        <p>{{ $t('sales.no_sales') }}</p>
       </div>
-      <div class="history-card-body">
-        <div class="product-bought-row">
-          <i class="pi pi-box"></i>
-          <span>{{ sale.productName || 'Producto' }}</span>
-          <span class="qty-badge">{{ $t('sales.quantity_badge', { count: sale.quantity }) }}</span>
+
+      <div v-for="sale in sales" :key="sale.id" class="history-card-item">
+        <div class="history-card-header">
+          <div class="client-badge-initial">
+            {{ getInitials(getCustomerName(sale.customerId)) }}
+          </div>
+          <div class="client-info">
+            <strong>{{ getCustomerName(sale.customerId) }}</strong>
+            <span class="sale-date-text">
+              <i class="pi pi-clock"></i> {{ formatDateTime(sale.date) }}
+            </span>
+          </div>
+
+          <div class="header-right-actions">
+            <span class="sale-amount-badge">S/ {{ Number(sale.total || 0).toFixed(2) }}</span>
+            <button type="button" class="btn-delete" @click="eliminarVenta(sale.id)" title="Eliminar venta">
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="history-card-body">
+          <div class="product-bought-row">
+            <div class="product-info-left">
+              <i class="pi pi-box"></i>
+              <span>{{ sale.items && sale.items.length ? getProductName(sale.items[0].productId) : 'Producto en tienda' }}</span>
+            </div>
+            <div class="product-info-right">
+              <span class="qty-badge">
+                {{ getTotalQuantity(sale.items) }} unidades
+              </span>
+              <button type="button" class="detail-link-btn" @click="openDetail(sale)">
+                Ver detalles ↗
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="showDetailModal" class="modal-backdrop" @click.self="closeDetail">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3>Sale Detail</h3>
+            <button class="close-btn" @click="closeDetail"><i class="pi pi-times"></i></button>
+          </div>
+          <div v-if="selectedSale" class="modal-body">
+
+            <div class="detail-row">
+              <span class="label">ID de Venta:</span>
+              <span class="value">#{{ selectedSale.id }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Cliente:</span>
+              <span class="value">{{ getCustomerName(selectedSale.customerId) }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Fecha y Hora:</span>
+              <span class="value">{{ formatDateTime(selectedSale.date) }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Método de pago:</span>
+              <span class="value">{{ getPaymentMethodLabel(selectedSale.paymentMethod) }}</span>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <span class="section-subtitle">Productos:</span>
+            <div v-for="(item, index) in (selectedSale.items || [])" :key="index" class="item-box-db">
+              <div class="detail-row">
+                <span class="label">Producto:</span>
+                <span class="value">{{ getProductName(item.productId) }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Cantidad:</span>
+                <span class="value">{{ item.quantity }} unidades</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Precio Unitario:</span>
+                <span class="value">S/ {{ Number(item.unitPrice || 0).toFixed(2) }}</span>
+              </div>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-row total-row">
+              <span class="label">Total Pagado:</span>
+              <span class="value total-price">S/ {{ Number(selectedSale.total || 0).toFixed(2) }}</span>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <pv-button label="Close" severity="secondary" @click="closeDetail" class="btn-close-modal" />
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.history-list-card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  border: 1px solid #E5D0B1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.empty-state { text-align: center; padding: 2rem; color: #825D38; }
-.empty-state i { font-size: 2.5rem; margin-bottom: 0.5rem; color: #ED6B15; }
-.history-card-item {
-  background: #F8F5EF; border: 1px solid #E5D0B1; border-radius: 14px; padding: 1rem;
-  display: flex; flex-direction: column; gap: 0.75rem;
-}
-.history-card-header { display: flex; align-items: center; gap: 0.75rem; }
-.client-badge-initial {
-  width: 40px; height: 40px; border-radius: 50%; background: #ED6B15; color: #FFF;
-  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0;
-}
-.client-info { flex: 1; display: flex; flex-direction: column; }
-.client-info strong { font-size: 0.95rem; color: #2F2019; }
-.sale-date-text { font-size: 0.78rem; color: #825D38; }
-.sale-amount-badge { font-weight: 800; color: #ED6B15; font-size: 1.1rem; }
-.history-card-body { border-top: 1px dashed #E5D0B1; padding-top: 0.75rem; }
-.product-bought-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: #2F2019; }
-.product-bought-row i { color: #ED6B15; }
-.qty-badge { margin-left: auto; background: #E5D0B1; color: #2F2019; padding: 0.15rem 0.5rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600; }
-</style>
