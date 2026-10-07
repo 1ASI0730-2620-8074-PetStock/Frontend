@@ -59,6 +59,7 @@
   "inventory": {
     "title": "Productos con bajo stock",
     "search_placeholder": "Buscar producto...",
+    "loading": "Cargando...",
     "critical_alert": "Alerta crítica",
     "low_stock": "Stock bajo",
     "urgent_product": "producto urgente",
@@ -69,6 +70,7 @@
     "units_remaining": "Faltan {count} unidades para el umbral seguro",
     "covered": "cubierto",
     "attention": "Atención",
+    "critical_tag": "CRÍTICO",
     "replenish_button": "+ Reponer",
     "edit_button": "Editar"
   },
