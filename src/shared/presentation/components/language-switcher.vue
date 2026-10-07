@@ -5,6 +5,7 @@ const { locale } = useI18n({ useScope: 'global' });
 
 const setLanguage = (lang) => {
   locale.value = lang;
+  localStorage.setItem('locale', lang); // se recuerda al recargar la página
 };
 
 </script>
