@@ -1,16 +1,15 @@
 import http from '@/shared/infrastructure/http-common.js';
 import { UserAssembler } from './user.assembler.js';
-import { SessionAssembler } from './session.assembler.js';
 
 export class IdentityApi {
     async login(credentials) {
-        const response = await http.get('/iam');
-        const usuarios = response.data.usuarios || [];
+        const response = await http.get('/users');
+        const users = response.data || [];
 
         // Validar correo Y contraseña
-        const userMatch = usuarios.find(
+        const userMatch = users.find(
             (u) =>
-                u.correo_electronico.toLowerCase() === credentials.email.toLowerCase() &&
+                u.email.toLowerCase() === credentials.email.toLowerCase() &&
                 u.password === credentials.password
         );
 
@@ -26,12 +25,11 @@ export class IdentityApi {
     }
 
     async register(userData) {
-        const response = await http.get('/iam');
-        const iamData = response.data || {};
-        const usuarios = iamData.usuarios || [];
+        const response = await http.get('/users');
+        const users = response.data || [];
 
-        const exists = usuarios.some(
-            (u) => u.correo_electronico.toLowerCase() === userData.correo_electronico.toLowerCase()
+        const exists = users.some(
+            (u) => u.email.toLowerCase() === userData.correo_electronico.toLowerCase()
         );
 
         if (exists) {
@@ -40,22 +38,18 @@ export class IdentityApi {
 
         // Crear el nuevo usuario INCLUYENDO la contraseña
         const newUser = {
-            id_usuario: usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id_usuario)) + 1 : 1,
-            nombre: userData.nombre,
-            apellidos: userData.apellidos,
-            correo_electronico: userData.correo_electronico,
-            telefono: userData.telefono || '',
-            rol: 'Cliente',
-            password: userData.password // <-- Guardar contraseña enviada en el formulario
+            firstName: userData.nombre,
+            lastName: userData.apellidos,
+            email: userData.correo_electronico.toLowerCase(),
+            password: userData.password,
+            phone: userData.telefono || '',
+            role: 'Administrador',
+            status: 'Active',
+            photoUrl: ''
         };
 
-        const updatedUsuarios = [...usuarios, newUser];
-
-        await http.patch('/iam', {
-            usuarios: updatedUsuarios
-        });
-
-        return newUser;
+        const created = await http.post('/users', newUser);
+        return created.data;
     }
 }
 

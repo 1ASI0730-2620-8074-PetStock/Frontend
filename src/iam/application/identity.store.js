@@ -42,6 +42,12 @@ export const useIdentityStore = defineStore('identity', () => {
         }
     }
 
+    // Actualiza los datos del usuario en sesión (por ejemplo, después de editar el perfil)
+    function updateCurrentUser(changes) {
+        currentUser.value = { ...currentUser.value, ...changes };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser.value));
+    }
+
     function logout() {
         currentUser.value = null;
         token.value = '';
@@ -57,6 +63,7 @@ export const useIdentityStore = defineStore('identity', () => {
         isAuthenticated,
         login,
         logout,
-        register
+        register,
+        updateCurrentUser
     };
 });
