@@ -9,7 +9,6 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import 'primeicons/primeicons.css';
 
-// petStock theme: aura with orange as the primary color
 const PetStockTheme = definePreset(Aura, {
     semantic: {
         primary: {
@@ -43,6 +42,7 @@ import RadioButton from 'primevue/radiobutton'
 import Textarea from 'primevue/textarea'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
+import Dialog from 'primevue/dialog'
 
 createApp(App)
     .use(i18n)
@@ -72,4 +72,5 @@ createApp(App)
     .component('pv-textarea', Textarea)
     .component('pv-icon-field', IconField)
     .component('pv-input-icon', InputIcon)
+    .component('pv-dialog', Dialog)
     .mount('#app')
