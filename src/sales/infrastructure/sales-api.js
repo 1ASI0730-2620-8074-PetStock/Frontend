@@ -22,6 +22,16 @@ export class SalesApi {
         const response = await http.get('/inventories');
         return response.data;
     }
+
+    // Descuenta del inventario las unidades vendidas (US18)
+    async decreaseStock(productId, quantity) {
+        const response = await http.get('/inventories');
+        const inventory = response.data.find(i => String(i.productId) === String(productId));
+        if (!inventory) return;
+        await http.patch(`/inventories/${inventory.id}`, {
+            currentStock: inventory.currentStock - Number(quantity)
+        });
+    }
 }
 
 export default new SalesApi();
