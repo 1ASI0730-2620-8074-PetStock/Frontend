@@ -59,6 +59,7 @@
   "inventory": {
     "title": "Low stock products",
     "search_placeholder": "Search product...",
+    "loading": "Loading...",
     "critical_alert": "Critical alert",
     "low_stock": "Low stock",
     "urgent_product": "urgent product",
@@ -69,9 +70,9 @@
     "units_remaining": "{count} units remaining for safe threshold",
     "covered": "covered",
     "attention": "Attention",
+    "critical_tag": "CRITICAL",
     "replenish_button": "+ Replenish",
-    "edit_button": "Edit",
-    "critical_tag": "CRITICAL"
+    "edit_button": "Edit"
   },
   "profile": {
     "title": "My profile",

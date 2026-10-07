@@ -49,10 +49,10 @@ function coincideBusqueda(idProducto) {
 }
 
 const alertasCriticas = computed(() =>
-    alertasStock.value.filter(a => a.nivelAlerta === 'Crítico' && a.estaActiva && coincideBusqueda(a.idProducto))
+    alertasStock.value.filter(a => a.nivelAlerta === 'critical' && a.estaActiva && coincideBusqueda(a.idProducto))
 )
 const alertasBajas = computed(() =>
-    alertasStock.value.filter(a => a.nivelAlerta !== 'Crítico' && a.estaActiva && coincideBusqueda(a.idProducto))
+    alertasStock.value.filter(a => a.nivelAlerta !== 'critical' && a.estaActiva && coincideBusqueda(a.idProducto))
 )
 </script>
 
@@ -63,7 +63,7 @@ const alertasBajas = computed(() =>
 
     <pv-input-text v-model="busqueda" :placeholder="$t('inventory.search_placeholder')" style="width: 100%; box-sizing: border-box; margin-bottom: 1.5rem;" />
 
-    <p v-if="loading">Cargando...</p>
+    <p v-if="loading">{{ $t('inventory.loading') }}</p>
     <p v-if="error">{{ error }}</p>
 
     <div v-if="alertasCriticas.length" style="margin-bottom: 2rem;">
