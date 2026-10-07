@@ -29,7 +29,9 @@ export function useCatalogStore() {
 
     async function agregarProducto(nuevoProducto) {
         const creado = await CatalogApi.createProducto(nuevoProducto)
-        productos.value.push(new Product(creado))
+        const productoCreado = new Product(creado)
+        productos.value.push(productoCreado)
+        return productoCreado
     }
 
     return {

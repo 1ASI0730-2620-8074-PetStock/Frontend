@@ -27,13 +27,13 @@ const nuevoProveedorCorreo = ref('')
 
 async function guardarNuevoProveedor() {
   const creado = await InventoryApi.createProveedor({
-    nombre_empresa: nuevoProveedorNombre.value,
-    contacto_nombre: nuevoProveedorContacto.value,
-    telefono: nuevoProveedorTelefono.value,
-    correo: nuevoProveedorCorreo.value
+    companyName: nuevoProveedorNombre.value,
+    contactName: nuevoProveedorContacto.value,
+    phone: nuevoProveedorTelefono.value,
+    email: nuevoProveedorCorreo.value
   })
   proveedores.value.push(creado)
-  idProveedor.value = creado.id_proveedor
+  idProveedor.value = creado.id
 
   nuevoProveedorNombre.value = ''
   nuevoProveedorContacto.value = ''
@@ -43,16 +43,22 @@ async function guardarNuevoProveedor() {
 }
 
 async function guardar() {
-  await agregarProducto({
-    nombre: nombre.value,
-    descripcion: descripcion.value,
-    precio_base: precioVenta.value,
-    stock_actual: stockDisponible.value,
-    stock_minimo: stockMinimo.value,
-    activo: activo.value,
-    id_categoria: idCategoria.value,
-    id_proveedor: idProveedor.value
+  const creado = await agregarProducto({
+    name: nombre.value,
+    description: descripcion.value,
+    price: precioVenta.value,
+    categoryId: idCategoria.value,
+    supplierId: idProveedor.value,
+    active: activo.value
   })
+
+  await InventoryApi.createInventario({
+    productId: creado.id,
+    currentStock: stockDisponible.value,
+    minimumStock: stockMinimo.value,
+    lastUpdated: new Date().toISOString()
+  })
+
   cancelar()
 }
 
@@ -118,8 +124,8 @@ function cancelar() {
               v-if="!mostrarNuevoProveedor"
               v-model="idProveedor"
               :options="proveedores"
-              optionLabel="nombre_empresa"
-              optionValue="id_proveedor"
+              optionLabel="companyName"
+              optionValue="id"
               :placeholder="$t('catalog.provider_placeholder')"
               style="width: 100%; margin-top: 0.5rem;"
           />

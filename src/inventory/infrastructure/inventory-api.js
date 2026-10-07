@@ -20,4 +20,9 @@ export class InventoryApi {
         const response = await http.post('/suppliers', nuevoProveedor)
         return response.data
     }
+
+    static async createInventario(nuevoInventario) {
+        const response = await http.post('/inventories', nuevoInventario)
+        return response.data
+    }
 }
