@@ -4,8 +4,8 @@ import { identityApi } from '../infrastructure/identity-api.js';
 
 export const useIdentityStore = defineStore('identity', () => {
     // --- ESTADO (State) ---
-    const currentUser = ref(JSON.parse(localStorage.getItem('currentUser')) || null);
-    const token = ref(localStorage.getItem('token') || '');
+    const currentUser = ref(JSON.parse(sessionStorage.getItem('currentUser')) || null);
+    const token = ref(sessionStorage.getItem('token') || '');
     const errors = ref([]);
 
     // --- GETTERS (Computed) ---
@@ -21,8 +21,8 @@ export const useIdentityStore = defineStore('identity', () => {
             currentUser.value = user;
             token.value = session.token;
 
-            localStorage.setItem('token', session.token);
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            sessionStorage.setItem('token', session.token);
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
 
             return true;
         } catch (error) {
@@ -45,17 +45,16 @@ export const useIdentityStore = defineStore('identity', () => {
     // Actualiza los datos del usuario en sesión (por ejemplo, después de editar el perfil)
     function updateCurrentUser(changes) {
         currentUser.value = { ...currentUser.value, ...changes };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser.value));
+        sessionStorage.setItem('currentUser', JSON.stringify(currentUser.value));
     }
 
     function logout() {
         currentUser.value = null;
         token.value = '';
-        localStorage.removeItem('token');
-        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('currentUser');
     }
 
-    // --- UN SOLO RETURN AL FINAL ---
     return {
         currentUser,
         token,
