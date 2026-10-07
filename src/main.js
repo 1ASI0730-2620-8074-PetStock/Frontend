@@ -49,6 +49,7 @@ createApp(App)
     .use(router)
     .use(PrimeVue, {
         ripple: true,
+        license: import.meta.env.VITE_PRIMEUI_LICENSE,
         theme: {
             preset: PetStockTheme,
             options: {
