@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { RouterLink } from 'vue-router';
 import http from '@/shared/infrastructure/http-common.js';
 import LanguageSwitcher from '@/shared/presentation/components/language-switcher.vue';
 
@@ -66,30 +67,32 @@ onMounted(async () => {
         <h2>PetStock</h2>
       </div>
 
-      <!-- Menú de Navegación -->
+      <!-- Menú de Navegación con RouterLink -->
       <nav class="sidebar-nav">
-        <a href="#" class="nav-item active">
+        <router-link to="/dashboard" class="nav-item" active-class="active">
           <i class="pi pi-th-large"></i>
           <span>{{ t('dashboard.title', 'Dashboard (Inicio)') }}</span>
-        </a>
-        <        <router-link to="/catalog" class="nav-item">
-        <i class="pi pi-box"></i>
-        <span>{{ t('dashboard.register_product', 'Registrar Producto') }}</span>
-      </router-link>
-        <a href="#" class="nav-item">
+        </router-link>
+        <router-link to="/catalog" class="nav-item" active-class="active">
+          <i class="pi pi-box"></i>
+          <span>{{ t('dashboard.register_product', 'Registrar Producto') }}</span>
+        </router-link>
+        <router-link to="/sales" class="nav-item" active-class="active">
           <i class="pi pi-shopping-bag"></i>
           <span>{{ t('dashboard.register_sale', 'Registrar Venta') }}</span>
-        </a>
-        <a href="#" class="nav-item">
+        </router-link>
+        <router-link to="/analytics" class="nav-item" active-class="active">
           <i class="pi pi-file"></i>
           <span>{{ t('dashboard.reports', 'Reportes') }}</span>
-        </a>
-        <        <router-link to="/inventory" class="nav-item">
-        <i class="pi pi-exclamation-triangle"></i>
-        <span>{{ t('dashboard.low_stock', 'Bajo Stock') }}</span>
-      </router-link>
+        </router-link>
+        <router-link to="/inventory" class="nav-item" active-class="active">
+          <i class="pi pi-exclamation-triangle"></i>
+          <span>{{ t('dashboard.low_stock', 'Bajo Stock') }}</span>
+        </router-link>
       </nav>
     </aside>
+
+    <!-- Contenido Principal -->
 
     <!-- Contenido Principal -->
     <main class="main-wrapper">

@@ -260,21 +260,6 @@
   ],
   "sales": [
     {
-      "id": "1",
-      "userId": 2,
-      "customerId": 1,
-      "items": [
-        {
-          "productId": 101,
-          "quantity": 1,
-          "unitPrice": 120
-        }
-      ],
-      "total": 120,
-      "paymentMethod": "cash",
-      "date": "2026-10-05T10:30:00Z"
-    },
-    {
       "id": "2",
       "userId": 2,
       "customerId": 2,
@@ -303,6 +288,22 @@
       "total": 45,
       "paymentMethod": "card",
       "date": "2026-10-05T12:00:00Z"
+    },
+    {
+      "id": "VNdebtTpgo0",
+      "userId": 2,
+      "customerId": "1",
+      "customerName": "Ana Torres",
+      "items": [
+        {
+          "productId": "103",
+          "quantity": 5,
+          "unitPrice": 45
+        }
+      ],
+      "total": 225,
+      "paymentMethod": "yape",
+      "date": "2026-10-07"
     }
   ],
   "customers": [
