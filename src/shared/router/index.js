@@ -3,6 +3,7 @@ import ProductCatalogView from '@/catalog/presentation/views/product-catalog.vie
 import StockDashboardView from '@/inventory/presentation/views/stock-dashboard.view.vue'
 import LoginView from '@/iam/presentation/views/login.view.vue'
 import RegisterView from '@/iam/presentation/views/register.view.vue';
+import DashboardView from '@/shared/presentation/views/dashboard.view.vue';
 import profileRoutes from "../../profile/presentation/profile-routes.js";
 import AnalyticsDashboardView from '@/analytics/presentation/views/analytics-dashboard.view.vue';
 const routes = [
@@ -35,6 +36,13 @@ const routes = [
         path: '/analytics',
         name: 'analytics',
         component: AnalyticsDashboardView
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: DashboardView,
+        // Opcional: Proteger la ruta si requiere autenticación
+        meta: { requiresAuth: true }
     },
 
     { path: '/profile', children: profileRoutes }
