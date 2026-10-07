@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useSalesStore } from '../../application/sales.store.js';
 import './sale-form.css';
 
+const { t } = useI18n();
 const salesStore = useSalesStore();
 
 onMounted(async () => {
@@ -78,7 +80,7 @@ async function onSubmit() {
   try {
     await salesStore.registerSale(newSaleData);
 
-    successMessage.value = '¡Venta registrada con éxito y guardada en el sistema!';
+    successMessage.value = t('sales.sale_success');
     setTimeout(() => {
       successMessage.value = '';
     }, 4000);
@@ -106,7 +108,7 @@ async function onSubmit() {
       <div class="form-section-box">
         <div class="section-title">
           <i class="pi pi-box"></i>
-          <span>PRODUCT & INVENTARIO</span>
+          <span>{{ $t('sales.section_product') }}</span>
         </div>
 
         <div class="input-group">
@@ -125,7 +127,7 @@ async function onSubmit() {
           <div class="quantity-row">
             <pv-input-number v-model="quantity" :min="1" :max="selectedProduct?.stock || 99" showButtons class="qty-input" />
             <span class="stock-badge" v-if="selectedProduct">
-              <i class="pi pi-info-circle"></i> Stock disponible: <strong>{{ selectedProduct.stock }} uds</strong>
+              <i class="pi pi-info-circle"></i> <strong>{{ $t('sales.stock_available', { count: selectedProduct.stock }) }}</strong>
             </span>
           </div>
         </div>
@@ -134,7 +136,7 @@ async function onSubmit() {
       <div class="form-section-box">
         <div class="section-title">
           <i class="pi pi-users"></i>
-          <span>DETALLES DEL CLIENTE Y FECHA</span>
+          <span>{{ $t('sales.section_customer') }}</span>
         </div>
 
         <div class="grid-2-cols">
@@ -204,15 +206,15 @@ async function onSubmit() {
           </div>
           <div>
             <span class="s-label">{{ $t('sales.summary_quantity') }}</span>
-            <span class="s-val">{{ quantity }} unidades</span>
+            <span class="s-val">{{ $t('sales.units', { count: quantity }) }}</span>
           </div>
           <div>
             <span class="s-label">{{ $t('sales.summary_customer') }}</span>
-            <span class="s-val">{{ selectedCustomer ? selectedCustomer.name : 'Cliente General' }}</span>
+            <span class="s-val">{{ selectedCustomer ? selectedCustomer.name : $t('sales.general_customer') }}</span>
           </div>
           <div>
-            <span class="s-label">Método de pago:</span>
-            <span class="s-val capitalize">{{ paymentMethod === 'yape' ? 'Yape' : paymentMethod === 'card' ? 'Tarjeta' : 'Efectivo' }}</span>
+            <span class="s-label">{{ $t('sales.payment_method') }}:</span>
+            <span class="s-val capitalize">{{ $t('sales.' + paymentMethod) }}</span>
           </div>
         </div>
         <div class="summary-footer">
@@ -230,26 +232,26 @@ async function onSubmit() {
     <div v-if="showNewCustomerModal" class="modal-backdrop" @click.self="showNewCustomerModal = false">
       <div class="modal-card">
         <div class="modal-header">
-          <h3>Registrar Nuevo Cliente</h3>
+          <h3>{{ $t('sales.new_customer_title') }}</h3>
           <button class="close-btn" @click="showNewCustomerModal = false"><i class="pi pi-times"></i></button>
         </div>
         <div class="modal-body">
           <div class="input-group">
-            <label class="field-label">Nombre completo <span class="req">*</span></label>
+            <label class="field-label">{{ $t('sales.full_name') }} <span class="req">*</span></label>
             <pv-input-text v-model="newCustName" placeholder="Ej. María Pérez" class="full-w" />
           </div>
           <div class="input-group">
-            <label class="field-label">Correo electrónico</label>
+            <label class="field-label">{{ $t('sales.email') }}</label>
             <pv-input-text v-model="newCustEmail" placeholder="correo@ejemplo.com" class="full-w" />
           </div>
           <div class="input-group">
-            <label class="field-label">Teléfono</label>
+            <label class="field-label">{{ $t('sales.phone') }}</label>
             <pv-input-text v-model="newCustPhone" placeholder="+51999999999" class="full-w" />
           </div>
         </div>
         <div class="modal-footer">
-          <pv-button label="Cancelar" severity="secondary" @click="showNewCustomerModal = false" />
-          <pv-button label="Guardar Cliente" @click="handleCreateCustomer" class="btn-save-cust" />
+          <pv-button :label="$t('sales.cancel')" severity="secondary" @click="showNewCustomerModal = false" />
+          <pv-button :label="$t('sales.save_customer')" @click="handleCreateCustomer" class="btn-save-cust" />
         </div>
       </div>
     </div>
