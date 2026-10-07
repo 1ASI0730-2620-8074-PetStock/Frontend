@@ -6,6 +6,8 @@ import RegisterView from '@/iam/presentation/views/register.view.vue';
 import DashboardView from '@/shared/presentation/views/dashboard.view.vue';
 import profileRoutes from "../../profile/presentation/profile-routes.js";
 import AnalyticsDashboardView from '@/analytics/presentation/views/analytics-dashboard.view.vue';
+import PosSaleView from '@/sales/presentation/views/pos-sale.view.vue';
+
 const routes = [
     {
         path: '/',
@@ -31,7 +33,12 @@ const routes = [
         name: 'inventory',
         component: StockDashboardView
     },
-
+    {
+        path: '/sales',
+        name: 'sales',
+        component: PosSaleView,
+        meta: { requiresAuth: true }
+    },
     {
         path: '/analytics',
         name: 'analytics',
@@ -41,10 +48,8 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: DashboardView,
-        // Opcional: Proteger la ruta si requiere autenticación
         meta: { requiresAuth: true }
     },
-
     { path: '/profile', children: profileRoutes }
 ]
 
