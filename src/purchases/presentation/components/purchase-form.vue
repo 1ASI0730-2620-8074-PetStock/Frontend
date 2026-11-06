@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps({
   products: { type: Array, default: () => [] },
   suppliers: { type: Array, default: () => [] },
+  initialProductId: { type: String, default: '' },
   submitting: { type: Boolean, default: false },
   resetToken: { type: Number, default: 0 }
 })
@@ -29,18 +30,49 @@ const selectedProduct = computed(() =>
 
 const total = computed(() => Number(quantity.value || 0) * Number(unitCost.value || 0))
 
-watch(supplierId, () => {
-  productId.value = ''
+watch(supplierId, (newSupplierId) => {
+  const selected = props.products.find(product => String(product.id) === String(productId.value))
+  if (selected?.supplierId && String(selected.supplierId) !== String(newSupplierId)) {
+    productId.value = ''
+  }
 })
 
-watch(() => props.resetToken, () => {
-  supplierId.value = ''
-  productId.value = ''
-  quantity.value = 1
-  unitCost.value = ''
-  purchaseDate.value = new Date().toISOString().slice(0, 10)
-  validationMessage.value = ''
-})
+watch(
+  [() => props.initialProductId, () => props.products],
+  ([initialProductId, products]) => {
+    if (!initialProductId) return
+    const product = products.find(item => String(item.id) === String(initialProductId))
+    if (!product) return
+    supplierId.value = product.supplierId ? String(product.supplierId) : ''
+    productId.value = String(product.id)
+  },
+  { immediate: true }
+)
+
+watch(
+  () => props.suppliers,
+  suppliers => {
+    const product = props.products.find(item => String(item.id) === String(props.initialProductId))
+    if (product?.supplierId && suppliers.some(item => String(item.id) === String(product.supplierId))) {
+      supplierId.value = String(product.supplierId)
+      productId.value = String(product.id)
+    }
+  },
+  { immediate: true }
+)
+
+watch(
+  () => props.resetToken,
+  () => {
+    if (props.initialProductId) return
+    supplierId.value = ''
+    productId.value = ''
+    quantity.value = 1
+    unitCost.value = ''
+    purchaseDate.value = new Date().toISOString().slice(0, 10)
+    validationMessage.value = ''
+  }
+)
 
 function submitPurchase() {
   validationMessage.value = ''

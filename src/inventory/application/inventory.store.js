@@ -27,12 +27,28 @@ export function useInventoryStore() {
         alertasStock.value = data.map(a => new StockAlert(a))
     }
 
+    async function actualizarStockMinimo(productId, minimumStock) {
+        error.value = null
+        try {
+            const updated = await InventoryApi.updateStockThreshold(productId, minimumStock)
+            const index = inventarios.value.findIndex(item => String(item.idProducto) === String(productId))
+            if (index !== -1) {
+                inventarios.value[index] = new Inventory(updated)
+            }
+            await cargarAlertasStock()
+        } catch (updateError) {
+            error.value = 'No se pudo actualizar el stock mínimo.'
+            throw updateError
+        }
+    }
+
     return {
         inventarios,
         alertasStock,
         loading,
         error,
         cargarInventarios,
-        cargarAlertasStock
+        cargarAlertasStock,
+        actualizarStockMinimo
     }
 }

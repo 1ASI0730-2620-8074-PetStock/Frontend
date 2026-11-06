@@ -77,8 +77,17 @@
     "categories_error": "Could not load categories."
   },
   "inventory": {
+    "eyebrow": "Inventory",
     "title": "Low stock products",
+    "subtitle": "Review stock levels and prioritize products that need replenishment.",
+    "summary": "Inventory alert summary",
+    "total_alerts": "Active alerts",
+    "search_title": "Search products",
+    "search_hint": "Filter alerts by product name.",
     "search_placeholder": "Search product...",
+    "clear_search": "Clear search",
+    "critical_description": "Products at or below their minimum required stock.",
+    "low_description": "Products approaching their minimum stock level.",
     "loading": "Loading...",
     "critical_alert": "Critical alert",
     "low_stock": "Low stock",
@@ -92,7 +101,18 @@
     "attention": "Attention",
     "critical_tag": "CRITICAL",
     "replenish_button": "+ Replenish",
-    "edit_button": "Edit"
+    "edit_button": "Edit",
+    "edit_minimum_label": "New minimum stock",
+    "save_minimum": "Save minimum",
+    "cancel_edit": "Cancel",
+    "saving": "Saving...",
+    "invalid_minimum": "Minimum stock must be a whole number equal to or greater than zero.",
+    "threshold_updated": "Minimum stock updated successfully.",
+    "threshold_update_error": "Could not update minimum stock. Please try again.",
+    "no_alerts": "Everything is in good shape",
+    "no_alerts_description": "There are no stock alerts at the moment.",
+    "no_search_results": "We could not find that product",
+    "no_search_description": "Try another name or clear the search."
   },
   "profile": {
     "title": "My profile",

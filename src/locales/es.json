@@ -77,8 +77,17 @@
     "categories_error": "No se pudieron cargar las categorías."
   },
   "inventory": {
+    "eyebrow": "Inventario",
     "title": "Productos con bajo stock",
+    "subtitle": "Revisa las existencias y prioriza los productos que necesitan reposición.",
+    "summary": "Resumen de alertas de inventario",
+    "total_alerts": "Alertas activas",
+    "search_title": "Buscar productos",
+    "search_hint": "Filtra las alertas por nombre de producto.",
     "search_placeholder": "Buscar producto...",
+    "clear_search": "Limpiar búsqueda",
+    "critical_description": "Productos que están en el mínimo requerido o por debajo.",
+    "low_description": "Productos próximos a alcanzar el stock mínimo.",
     "loading": "Cargando...",
     "critical_alert": "Alerta crítica",
     "low_stock": "Stock bajo",
@@ -92,7 +101,18 @@
     "attention": "Atención",
     "critical_tag": "CRÍTICO",
     "replenish_button": "+ Reponer",
-    "edit_button": "Editar"
+    "edit_button": "Editar",
+    "edit_minimum_label": "Nuevo stock mínimo",
+    "save_minimum": "Guardar mínimo",
+    "cancel_edit": "Cancelar",
+    "saving": "Guardando...",
+    "invalid_minimum": "El stock mínimo debe ser un número entero igual o mayor que cero.",
+    "threshold_updated": "Stock mínimo actualizado correctamente.",
+    "threshold_update_error": "No se pudo actualizar el stock mínimo. Inténtalo nuevamente.",
+    "no_alerts": "Todo está en orden",
+    "no_alerts_description": "No hay productos con alertas de stock por el momento.",
+    "no_search_results": "No encontramos ese producto",
+    "no_search_description": "Prueba con otro nombre o limpia la búsqueda."
   },
   "profile": {
     "title": "Mi perfil",

@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { usePurchasesStore } from '../../application/purchases.store.js'
 import PurchaseForm from '../components/purchase-form.vue'
@@ -7,6 +8,7 @@ import PurchaseHistoryList from '../components/purchase-history-list.vue'
 import '../components/purchases.css'
 
 const { t } = useI18n()
+const route = useRoute()
 const purchasesStore = usePurchasesStore()
 const activeTab = ref('register')
 const formResetToken = ref(0)
@@ -83,6 +85,7 @@ async function handleDeletePurchase(purchase) {
         :key="formResetToken"
         :products="purchasesStore.products"
         :suppliers="purchasesStore.suppliers"
+        :initial-product-id="String(route.query.productId || '')"
         :submitting="purchasesStore.submitting"
         :reset-token="formResetToken"
         @submit-purchase="handleRegisterPurchase"
