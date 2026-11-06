@@ -15,6 +15,7 @@ const menuItems = [
   { to: '/dashboard', icon: 'pi pi-th-large', label: 'layout.menu_dashboard' },
   { to: '/catalog', icon: 'pi pi-box', label: 'layout.menu_product' },
   { to: '/sales', icon: 'pi pi-shopping-bag', label: 'layout.menu_sale' },
+  { to: '/purchases', icon: 'pi pi-shopping-cart', label: 'layout.menu_purchase' },
   { to: '/analytics', icon: 'pi pi-file', label: 'layout.menu_reports' },
   { to: '/inventory', icon: 'pi pi-exclamation-triangle', label: 'layout.menu_low_stock' }
 ];
