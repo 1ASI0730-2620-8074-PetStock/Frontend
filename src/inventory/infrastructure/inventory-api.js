@@ -7,6 +7,25 @@ export class InventoryApi {
         return response.data.map(i => ({ ...i, productId: String(i.productId) }))
     }
 
+    static async updateStockThreshold(productId, minimumStock) {
+        const value = Number(minimumStock)
+        if (!Number.isInteger(value) || value < 0) {
+            throw new Error('El stock mínimo debe ser un número entero igual o mayor que cero.')
+        }
+
+        const inventory = await http.get('/inventories')
+        const record = inventory.data.find(item => String(item.productId) === String(productId))
+        if (!record) {
+            throw new Error('No se encontró el inventario del producto.')
+        }
+
+        const response = await http.patch(`/inventories/${record.id}`, {
+            minimumStock: value,
+            lastUpdated: new Date().toISOString()
+        })
+        return { ...response.data, productId: String(response.data.productId) }
+    }
+
     // Las alertas se calculan con el stock actual (US16):
     // stock menor o igual al mínimo = critical, hasta 50% por encima del mínimo = low
     static async getAlertasStock() {

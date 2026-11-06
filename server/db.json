@@ -151,7 +151,7 @@
       "productId": 101,
       "currentStock": 25,
       "minimumStock": 5,
-      "lastUpdated": "2026-10-05T10:00:00Z"
+      "lastUpdated": "2026-11-06T23:14:45.009Z"
     },
     {
       "id": "2",
@@ -239,6 +239,7 @@
       "date": "2026-10-07"
     }
   ],
+  "purchases": [],
   "customers": [
     {
       "id": "1",

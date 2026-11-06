@@ -6,7 +6,7 @@ function toProductResource(product) {
         ...product,
         id: String(product.id),
         categoryId: String(product.categoryId),
-        supplierId: String(product.supplierId)
+        supplierId: product.supplierId == null ? null : String(product.supplierId)
     }
 }
 
@@ -23,23 +23,39 @@ export class CatalogApi {
 
     // El formulario envía los campos en español; aquí se guardan en inglés
     static async createProducto(nuevoProducto) {
+        const price = Number(nuevoProducto.precio_base)
+        const minimumStock = Number(nuevoProducto.stock_minimo)
+        if (!nuevoProducto.nombre?.trim() || !nuevoProducto.id_categoria ||
+            !Number.isFinite(price) || price <= 0 ||
+            !Number.isInteger(minimumStock) || minimumStock < 0) {
+            throw new Error('Los datos del producto no son válidos.')
+        }
+
         // 1. Se registra el producto en el catálogo
         const productResponse = await http.post('/products', {
-            name: nuevoProducto.nombre,
+            name: nuevoProducto.nombre.trim(),
             description: nuevoProducto.descripcion,
-            price: Number(nuevoProducto.precio_base),
+            price,
             categoryId: nuevoProducto.id_categoria,
-            supplierId: nuevoProducto.id_proveedor,
+            supplierId: nuevoProducto.id_proveedor || null,
             active: nuevoProducto.activo
         })
 
-        // 2. Se registra su stock en el inventario (con el id que generó el API)
-        await http.post('/inventories', {
-            productId: productResponse.data.id,
-            currentStock: Number(nuevoProducto.stock_actual),
-            minimumStock: Number(nuevoProducto.stock_minimo),
-            lastUpdated: new Date().toISOString()
-        })
+        try {
+            await http.post('/inventories', {
+                productId: productResponse.data.id,
+                currentStock: 0,
+                minimumStock,
+                lastUpdated: new Date().toISOString()
+            })
+        } catch (error) {
+            try {
+                await http.delete(`/products/${productResponse.data.id}`)
+            } catch (rollbackError) {
+                console.error('No se pudo eliminar el producto después de fallar la creación del inventario:', rollbackError)
+            }
+            throw error
+        }
 
         return toProductResource(productResponse.data)
     }
