@@ -131,6 +131,11 @@
     background: rgba(220, 38, 38, 0.1);
 }
 
+.btn-delete:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .history-card-body {
     border-top: 1px dashed #E5D0B1;
     padding-top: 0.75rem;
