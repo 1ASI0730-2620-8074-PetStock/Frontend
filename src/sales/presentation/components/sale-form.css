@@ -27,6 +27,26 @@
     color: #10B981;
 }
 
+.sale-error-banner,
+.sale-loading-message {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.sale-error-banner {
+    border: 1px solid #F5C6CB;
+    background: #FDE8E8;
+    color: #9B1C1C;
+}
+
+.sale-loading-message {
+    color: #825D38;
+}
+
 .form-card-modern {
     background: #ffffff;
     border-radius: 20px;

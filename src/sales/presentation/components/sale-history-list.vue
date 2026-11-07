@@ -14,6 +14,7 @@ defineProps({
 const selectedSale = ref(null);
 const showDetailModal = ref(false);
 const deleteMessage = ref('');
+const deleteError = ref('');
 
 function openDetail(sale) {
   selectedSale.value = sale;
@@ -26,20 +27,26 @@ function closeDetail() {
 }
 
 async function eliminarVenta(id) {
+  const confirmed = window.confirm(t('sales.confirm_delete'));
+  if (!confirmed) return;
+
+  deleteError.value = '';
   try {
     await salesStore.deleteSale(id);
     deleteMessage.value = t('sales.delete_success');
     setTimeout(() => {
       deleteMessage.value = '';
     }, 4000);
-  } catch (e) {
-    alert('No se pudo eliminar la venta del servidor.');
+  } catch (error) {
+    deleteError.value = error.message || t('sales.delete_error');
+    console.error('Error al eliminar venta desde el historial:', error);
   }
 }
 
-function getCustomerName(customerId) {
-  const cust = salesStore.customers.find(c => String(c.id) === String(customerId));
-  return cust ? cust.name : t('sales.general_customer');
+function getCustomerName(sale) {
+  if (sale.customerId == null) return sale.customerName || t('sales.general_customer');
+  const cust = salesStore.customers.find(c => String(c.id) === String(sale.customerId));
+  return cust ? cust.name : sale.customerName || t('sales.general_customer');
 }
 
 function getInitials(name) {
@@ -51,9 +58,9 @@ function getInitials(name) {
   return name.substring(0, 2).toUpperCase();
 }
 
-function getProductName(productId) {
+function getProductName(productId, fallbackName) {
   const prod = salesStore.products.find(p => String(p.id) === String(productId));
-  return prod ? prod.name : `Producto ID: ${productId}`;
+  return prod ? prod.name : fallbackName || `Producto ID: ${productId}`;
 }
 
 function formatDateTime(dateString) {
@@ -83,7 +90,7 @@ function getPaymentMethodLabel(method) {
 }
 
 function getTotalQuantity(items) {
-  if (!items || !Array.isArray(items)) return 1;
+  if (!items || !Array.isArray(items)) return 0;
   return items.reduce((acc, i) => acc + (Number(i.quantity) || 0), 0);
 }
 </script>
@@ -93,6 +100,9 @@ function getTotalQuantity(items) {
     <div v-if="deleteMessage" class="success-banner-delete">
       <i class="pi pi-check-circle"></i>
       <span>{{ deleteMessage }}</span>
+    </div>
+    <div v-if="deleteError" class="sale-error-banner" role="alert">
+      <i class="pi pi-exclamation-circle"></i><span>{{ deleteError }}</span>
     </div>
 
     <div class="history-list-card">
@@ -104,10 +114,10 @@ function getTotalQuantity(items) {
       <div v-for="sale in sales" :key="sale.id" class="history-card-item">
         <div class="history-card-header">
           <div class="client-badge-initial">
-            {{ getInitials(getCustomerName(sale.customerId)) }}
+            {{ getInitials(getCustomerName(sale)) }}
           </div>
           <div class="client-info">
-            <strong>{{ getCustomerName(sale.customerId) }}</strong>
+            <strong>{{ getCustomerName(sale) }}</strong>
             <span class="sale-date-text">
               <i class="pi pi-clock"></i> {{ formatDateTime(sale.date) }}
             </span>
@@ -115,7 +125,7 @@ function getTotalQuantity(items) {
 
           <div class="header-right-actions">
             <span class="sale-amount-badge">S/ {{ Number(sale.total || 0).toFixed(2) }}</span>
-            <button type="button" class="btn-delete" @click="eliminarVenta(sale.id)" title="Eliminar venta">
+            <button type="button" class="btn-delete" :disabled="salesStore.submitting" @click="eliminarVenta(sale.id)" :title="$t('sales.delete_sale')" :aria-label="$t('sales.delete_sale')">
               <i class="pi pi-trash"></i>
             </button>
           </div>
@@ -125,7 +135,7 @@ function getTotalQuantity(items) {
           <div class="product-bought-row">
             <div class="product-info-left">
               <i class="pi pi-box"></i>
-              <span>{{ sale.items && sale.items.length ? getProductName(sale.items[0].productId) : $t('sales.in_store_product') }}</span>
+              <span>{{ sale.items && sale.items.length ? getProductName(sale.items[0].productId, sale.items[0].productName) : sale.productName || $t('sales.in_store_product') }}</span>
             </div>
             <div class="product-info-right">
               <span class="qty-badge">
@@ -143,7 +153,7 @@ function getTotalQuantity(items) {
         <div class="modal-card">
           <div class="modal-header">
             <h3>{{ $t('sales.detail_dialog_title') }}</h3>
-            <button class="close-btn" @click="closeDetail"><i class="pi pi-times"></i></button>
+            <button type="button" class="close-btn" @click="closeDetail"><i class="pi pi-times"></i></button>
           </div>
           <div v-if="selectedSale" class="modal-body">
 
@@ -153,7 +163,7 @@ function getTotalQuantity(items) {
             </div>
             <div class="detail-row">
               <span class="label">{{ $t('sales.summary_customer') }}</span>
-              <span class="value">{{ getCustomerName(selectedSale.customerId) }}</span>
+              <span class="value">{{ getCustomerName(selectedSale) }}</span>
             </div>
             <div class="detail-row">
               <span class="label">{{ $t('sales.date_time') }}:</span>
@@ -170,7 +180,7 @@ function getTotalQuantity(items) {
             <div v-for="(item, index) in (selectedSale.items || [])" :key="index" class="item-box-db">
               <div class="detail-row">
                 <span class="label">{{ $t('sales.summary_product') }}</span>
-                <span class="value">{{ getProductName(item.productId) }}</span>
+                <span class="value">{{ getProductName(item.productId, item.productName) }}</span>
               </div>
               <div class="detail-row">
                 <span class="label">{{ $t('sales.summary_quantity') }}</span>

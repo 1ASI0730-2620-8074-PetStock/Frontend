@@ -1,15 +1,13 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSalesStore } from '../../application/sales.store.js';
+import { useIdentityStore } from '@/iam/application/identity.store.js';
 import './sale-form.css';
 
 const { t } = useI18n();
 const salesStore = useSalesStore();
-
-onMounted(async () => {
-  await salesStore.loadInitialData();
-});
+const identityStore = useIdentityStore();
 
 const selectedProduct = ref(null);
 const quantity = ref(1);
@@ -22,6 +20,31 @@ const showNewCustomerModal = ref(false);
 const newCustName = ref('');
 const newCustEmail = ref('');
 const newCustPhone = ref('');
+const formError = ref('');
+const customerError = ref('');
+const customerSaving = ref(false);
+
+const maximumQuantity = computed(() => Number(selectedProduct.value?.stock || 0));
+const canSubmit = computed(() =>
+  Boolean(selectedProduct.value) &&
+  maximumQuantity.value > 0 &&
+  Number.isInteger(Number(quantity.value)) &&
+  Number(quantity.value) > 0 &&
+  Number(quantity.value) <= maximumQuantity.value &&
+  Boolean(saleDate.value) &&
+  !salesStore.submitting
+);
+
+watch(selectedProduct, product => {
+  formError.value = '';
+  quantity.value = 1;
+});
+
+watch(quantity, value => {
+  if (selectedProduct.value && Number(value) > maximumQuantity.value && maximumQuantity.value > 0) {
+    quantity.value = maximumQuantity.value;
+  }
+});
 
 const calculatedTotal = computed(() => {
   if (!selectedProduct.value) return 0;
@@ -31,40 +54,57 @@ const calculatedTotal = computed(() => {
 
 async function handleCreateCustomer() {
   if (!newCustName.value.trim()) {
-    alert('Por favor ingresa el nombre del cliente');
+    customerError.value = t('sales.customer_name_required');
     return;
   }
 
+  customerError.value = '';
+  customerSaving.value = true;
   const newCustomerData = {
-    id: Math.random().toString(36).substring(2, 9),
     name: newCustName.value.trim(),
-    email: newCustEmail.value.trim() || 'cliente@petstock.com',
-    phone: newCustPhone.value.trim() || '+51999999999'
+    email: newCustEmail.value.trim(),
+    phone: newCustPhone.value.trim()
   };
 
   try {
-    await salesStore.addCustomer(newCustomerData);
-    selectedCustomer.value = newCustomerData;
+    selectedCustomer.value = await salesStore.addCustomer(newCustomerData);
     showNewCustomerModal.value = false;
     newCustName.value = '';
     newCustEmail.value = '';
     newCustPhone.value = '';
-  } catch (e) {
-    alert('No se pudo guardar el cliente.');
+  } catch (error) {
+    customerError.value = t('sales.customer_save_error');
+    console.error('Error al registrar cliente desde ventas:', error);
+  } finally {
+    customerSaving.value = false;
   }
 }
 
 async function onSubmit() {
+  formError.value = '';
   if (!selectedProduct.value) {
-    alert('Por favor selecciona un producto');
+    formError.value = t('sales.product_required');
+    return;
+  }
+  if (maximumQuantity.value <= 0) {
+    formError.value = t('sales.out_of_stock');
+    return;
+  }
+  if (!Number.isInteger(Number(quantity.value)) || Number(quantity.value) < 1 ||
+      Number(quantity.value) > maximumQuantity.value) {
+    formError.value = t('sales.invalid_quantity', { count: maximumQuantity.value });
+    return;
+  }
+  if (!saleDate.value) {
+    formError.value = t('sales.date_required');
     return;
   }
 
   const newSaleData = {
     id: Math.random().toString(36).substring(2, 9),
-    userId: 2,
-    customerId: selectedCustomer.value ? String(selectedCustomer.value.id) : "1",
-    customerName: selectedCustomer.value ? selectedCustomer.value.name : "Cliente General",
+    userId: identityStore.currentUser?.id ?? null,
+    customerId: selectedCustomer.value ? String(selectedCustomer.value.id) : null,
+    customerName: selectedCustomer.value ? selectedCustomer.value.name : t('sales.general_customer'),
     items: [
       {
         productId: String(selectedProduct.value.id),
@@ -91,7 +131,7 @@ async function onSubmit() {
     paymentMethod.value = 'cash';
   } catch (e) {
     console.error('Error al registrar la venta:', e);
-    alert('Hubo un error al registrar la venta en la base de datos.');
+    formError.value = salesStore.error || t('sales.sale_error');
   }
 }
 </script>
@@ -102,8 +142,15 @@ async function onSubmit() {
       <i class="pi pi-check-circle"></i>
       <span>{{ successMessage }}</span>
     </div>
+    <div v-if="formError || salesStore.error" class="sale-error-banner" role="alert">
+      <i class="pi pi-exclamation-circle"></i>
+      <span>{{ formError || salesStore.error }}</span>
+    </div>
 
     <form @submit.prevent="onSubmit" class="form-card-modern">
+      <div v-if="salesStore.loading" class="sale-loading-message">
+        <i class="pi pi-spin pi-spinner"></i>{{ $t('sales.loading') }}
+      </div>
 
       <div class="form-section-box">
         <div class="section-title">
@@ -125,9 +172,10 @@ async function onSubmit() {
         <div class="input-group" style="margin-top: 1rem;">
           <label class="field-label">{{ $t('sales.quantity_label') }} <span class="req">*</span></label>
           <div class="quantity-row">
-            <pv-input-number v-model="quantity" :min="1" :max="selectedProduct?.stock || 99" showButtons class="qty-input" />
+            <pv-input-number v-model="quantity" :min="1" :max="maximumQuantity" :disabled="!selectedProduct || maximumQuantity <= 0" showButtons class="qty-input" />
             <span class="stock-badge" v-if="selectedProduct">
-              <i class="pi pi-info-circle"></i> <strong>{{ $t('sales.stock_available', { count: selectedProduct.stock }) }}</strong>
+              <i :class="maximumQuantity > 0 ? 'pi pi-info-circle' : 'pi pi-exclamation-circle'"></i>
+              <strong>{{ maximumQuantity > 0 ? $t('sales.stock_available', { count: maximumQuantity }) : $t('sales.out_of_stock') }}</strong>
             </span>
           </div>
         </div>
@@ -142,7 +190,7 @@ async function onSubmit() {
         <div class="grid-2-cols">
           <div class="input-group">
             <div class="label-row">
-              <label class="field-label">{{ $t('sales.customer_label') }} <span class="req">*</span></label>
+              <label class="field-label">{{ $t('sales.customer_label') }}</label>
               <a href="#" class="new-customer-link" @click.prevent="showNewCustomerModal = true">{{ $t('sales.customer_new') }}</a>
             </div>
             <pv-select
@@ -224,7 +272,7 @@ async function onSubmit() {
       </div>
 
       <div class="form-actions">
-        <pv-button type="submit" :label="$t('sales.submit_button')" class="btn-submit-sale" />
+        <pv-button type="submit" :label="salesStore.submitting ? $t('sales.saving_sale') : $t('sales.submit_button')" :disabled="!canSubmit || salesStore.loading" :loading="salesStore.submitting" class="btn-submit-sale" />
       </div>
 
     </form>
@@ -236,6 +284,7 @@ async function onSubmit() {
           <button class="close-btn" @click="showNewCustomerModal = false"><i class="pi pi-times"></i></button>
         </div>
         <div class="modal-body">
+          <p v-if="customerError" class="sale-error-banner" role="alert">{{ customerError }}</p>
           <div class="input-group">
             <label class="field-label">{{ $t('sales.full_name') }} <span class="req">*</span></label>
             <pv-input-text v-model="newCustName" placeholder="Ej. María Pérez" class="full-w" />
@@ -250,8 +299,8 @@ async function onSubmit() {
           </div>
         </div>
         <div class="modal-footer">
-          <pv-button :label="$t('sales.cancel')" severity="secondary" @click="showNewCustomerModal = false" />
-          <pv-button :label="$t('sales.save_customer')" @click="handleCreateCustomer" class="btn-save-cust" />
+          <pv-button :label="$t('sales.cancel')" severity="secondary" :disabled="customerSaving" @click="showNewCustomerModal = false" />
+          <pv-button :label="customerSaving ? $t('sales.saving_customer') : $t('sales.save_customer')" :loading="customerSaving" @click="handleCreateCustomer" class="btn-save-cust" />
         </div>
       </div>
     </div>
