@@ -19,9 +19,10 @@ export class InventoryApi {
             throw new Error('No se encontró el inventario del producto.')
         }
 
-        const response = await http.patch(`/inventories/${record.id}`, {
-            minimumStock: value,
-            lastUpdated: new Date().toISOString()
+        // El API reemplaza las dos cantidades, por eso se envía también el stock actual
+        const response = await http.put(`/inventories/${record.id}`, {
+            currentStock: record.currentStock,
+            minimumStock: value
         })
         return { ...response.data, productId: String(response.data.productId) }
     }
