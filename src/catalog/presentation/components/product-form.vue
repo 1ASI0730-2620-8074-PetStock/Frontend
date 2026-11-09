@@ -71,7 +71,7 @@ async function guardar() {
 
   const price = Number(precioVenta.value)
   const minimumStock = Number(stockMinimo.value)
-  if (!nombre.value.trim() || !idCategoria.value || !Number.isFinite(price) || price <= 0 ||
+  if (!nombre.value.trim() || !idCategoria.value || !idProveedor.value || !Number.isFinite(price) || price <= 0 ||
       stockMinimo.value === null || stockMinimo.value === '' ||
       !Number.isInteger(minimumStock) || minimumStock < 0) {
     errorMessage.value = t('catalog.invalid_fields')

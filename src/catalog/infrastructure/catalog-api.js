@@ -25,28 +25,27 @@ export class CatalogApi {
     static async createProducto(nuevoProducto) {
         const price = Number(nuevoProducto.precio_base)
         const minimumStock = Number(nuevoProducto.stock_minimo)
-        if (!nuevoProducto.nombre?.trim() || !nuevoProducto.id_categoria ||
+        if (!nuevoProducto.nombre?.trim() || !nuevoProducto.id_categoria || !nuevoProducto.id_proveedor ||
             !Number.isFinite(price) || price <= 0 ||
             !Number.isInteger(minimumStock) || minimumStock < 0) {
             throw new Error('Los datos del producto no son válidos.')
         }
 
-        // 1. Se registra el producto en el catálogo
+// 1. Se registra el producto en el catálogo (el API lo crea siempre activo)
         const productResponse = await http.post('/products', {
             name: nuevoProducto.nombre.trim(),
             description: nuevoProducto.descripcion,
             price,
-            categoryId: nuevoProducto.id_categoria,
-            supplierId: nuevoProducto.id_proveedor || null,
-            active: nuevoProducto.activo
+            categoryId: Number(nuevoProducto.id_categoria),
+            supplierId: Number(nuevoProducto.id_proveedor)
         })
 
+// 2. Se registra su inventario (la fecha la pone el API)
         try {
             await http.post('/inventories', {
                 productId: productResponse.data.id,
                 currentStock: 0,
-                minimumStock,
-                lastUpdated: new Date().toISOString()
+                minimumStock
             })
         } catch (error) {
             try {
