@@ -7,6 +7,7 @@ import DashboardView from '@/shared/presentation/views/dashboard.view.vue'
 import ProductCatalogView from '@/catalog/presentation/views/product-catalog.view.vue'
 import StockDashboardView from '@/inventory/presentation/views/stock-dashboard.view.vue'
 import PosSaleView from '@/sales/presentation/views/pos-sale.view.vue'
+import PurchasesView from '@/purchases/presentation/views/purchases.view.vue'
 import AnalyticsDashboardView from '@/analytics/presentation/views/analytics-dashboard.view.vue'
 import profileRoutes from '@/profile/presentation/profile-routes.js'
 
@@ -24,6 +25,7 @@ const routes = [
             { path: 'catalog', name: 'catalog', component: ProductCatalogView },
             { path: 'inventory', name: 'inventory', component: StockDashboardView },
             { path: 'sales', name: 'sales', component: PosSaleView },
+            { path: 'purchases', name: 'purchases', component: PurchasesView },
             { path: 'analytics', name: 'analytics', component: AnalyticsDashboardView },
             { path: 'profile', children: profileRoutes }
         ]

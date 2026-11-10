@@ -38,10 +38,8 @@ async function handleRegisterSale(saleEntity) {
   try {
     await salesStore.registerSale(saleEntity);
     showToast('¡Venta registrada con éxito!', 'success');
-    const prod = salesStore.products.find(p => String(p.id) === String(saleEntity.productId));
-    if (prod) prod.stock -= saleEntity.quantity;
   } catch (err) {
-    showToast('Error al registrar venta', 'error');
+    showToast(err.message || 'Error al registrar venta', 'error');
   }
 }
 

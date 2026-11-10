@@ -1,4 +1,3 @@
-import http from "../../shared/infrastructure/http-common.js";
 import {BaseEndpoint} from "../../shared/infrastructure/base-endpoint.js";
 
 const usersEndpoint = new BaseEndpoint('users');
@@ -18,12 +17,12 @@ export class ProfileApi {
     }
 
     /**
-     * updates only the fields sent (patch), so the other user fields are kept.
+     * updates the user data of the profile (put /users/{id}).
      * @param {number|string} userId - user identifier.
-     * @param {object} resource - fields to update.
+     * @param {object} resource - first name, last name, email and phone.
      * @returns {promise<import('axios').axiosresponse>} response with the updated user resource.
      */
     updateProfile(userId, resource) {
-        return http.patch(`/users/${userId}`, resource);
+        return usersEndpoint.update(userId, resource);
     }
 }
