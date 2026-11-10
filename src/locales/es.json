@@ -94,6 +94,7 @@
     "urgent_product": "producto urgente",
     "urgent_products": "productos urgentes",
     "current_stock": "Stock actual",
+    "product_stock_caption": "Estado de stock del producto",
     "min_required": "Mínimo requerido",
     "units": "unidades",
     "units_remaining": "Faltan {count} unidades para el umbral seguro",

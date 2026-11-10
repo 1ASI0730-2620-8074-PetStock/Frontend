@@ -94,6 +94,7 @@
     "urgent_product": "urgent product",
     "urgent_products": "urgent products",
     "current_stock": "Current stock",
+    "product_stock_caption": "Product stock status",
     "min_required": "Minimum required",
     "units": "units",
     "units_remaining": "{count} units remaining for safe threshold",
