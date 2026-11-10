@@ -9,15 +9,17 @@ export class Profile {
      * @param {string} [params.firstName=''] - first name.
      * @param {string} [params.lastName=''] - last name.
      * @param {string} [params.email=''] - email address.
+     * @param {string} [params.phone=''] - phone number.
      * @param {string} [params.role=''] - role inside the store (e.g. admin).
      * @param {string} [params.status=''] - account status (e.g. active).
      * @param {string} [params.photoUrl=''] - profile picture url.
      */
-    constructor({id = null, firstName = '', lastName = '', email = '', role = '', status = '', photoUrl = ''}) {
+    constructor({id = null, firstName = '', lastName = '', email = '', phone = '', role = '', status = '', photoUrl = ''}) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phone = phone;
         this.role = role;
         this.status = status;
         this.photoUrl = photoUrl;
