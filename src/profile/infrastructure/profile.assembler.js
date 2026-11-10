@@ -20,7 +20,8 @@ export class ProfileAssembler {
         return {
             firstName: profile.firstName,
             lastName: profile.lastName,
-            email: profile.email
+            email: profile.email,
+            phone: profile.phone
         };
     }
 }
