@@ -12,7 +12,8 @@ const {
   report,
   loading,
   error,
-  loadDashboard
+  loadDashboard,
+  registerReport
 } = useAnalyticsStore();
 
 
@@ -21,7 +22,8 @@ onMounted(() => {
 });
 
 function printReport() {
-  window.print();
+  registerReport()
+  window.print()
 }
 </script>
 
