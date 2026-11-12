@@ -1,3 +1,4 @@
+
 import http from '@/shared/infrastructure/http-common.js'
 import saleAssembler from './sale.assembler.js'
 
@@ -14,6 +15,24 @@ export class SalesApi {
 
     async deleteSale(id) {
         await http.delete(`/sales/${id}`)
+    }
+
+    async createPayment(sale) {
+        const response = await http.post('/payments', {
+            saleId: Number(sale.id),
+            amount: Number(sale.total),
+            paymentMethod: sale.paymentMethod
+        })
+        return response.data
+    }
+
+    async createPurchaseHistoryEntry(sale) {
+        const response = await http.post('/purchase-history-entries', {
+            customerId: Number(sale.customerId),
+            saleId: Number(sale.id),
+            total: Number(sale.total)
+        })
+        return response.data
     }
 
     async getProducts() {
@@ -52,9 +71,9 @@ export class SalesApi {
             throw new Error(`Stock insuficiente. Disponible: ${currentStock}.`)
         }
 
-        const response = await http.patch(`/inventories/${inventory.id}`, {
+        const response = await http.put(`/inventories/${inventory.id}`, {
             currentStock: currentStock - amount,
-            lastUpdated: new Date().toISOString()
+            minimumStock: Number(inventory.minimumStock || 0)
         })
         return response.data
     }
@@ -70,9 +89,9 @@ export class SalesApi {
             throw new Error('El producto no tiene un registro de inventario.')
         }
 
-        const response = await http.patch(`/inventories/${inventory.id}`, {
+        const response = await http.put(`/inventories/${inventory.id}`, {
             currentStock: Number(inventory.currentStock || 0) + amount,
-            lastUpdated: new Date().toISOString()
+            minimumStock: Number(inventory.minimumStock || 0)
         })
         return response.data
     }

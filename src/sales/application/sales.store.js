@@ -1,3 +1,4 @@
+
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import salesApi from '../infrastructure/sales-api.js'
@@ -76,6 +77,17 @@ export const useSalesStore = defineStore('sales', () => {
 
             const created = await salesApi.createSale(saleEntity)
             sales.value.unshift(created)
+
+            // The sale is saved; any secondary registration error is logged.
+            try {
+                await salesApi.createPayment(created)
+                if (created.customerId) {
+                    await salesApi.createPurchaseHistoryEntry(created)
+                }
+            } catch (recordError) {
+                console.error('Could not register the payment or purchase history:', recordError)
+            }
+
             for (const change of stockChanges) {
                 const product = products.value.find(item => String(item.id) === change.productId)
                 if (product) product.stock = Number(product.stock || 0) - change.quantity
