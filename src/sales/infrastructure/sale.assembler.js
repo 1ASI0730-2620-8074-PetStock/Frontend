@@ -1,3 +1,4 @@
+
 export class SaleAssembler {
     toEntity(resource) {
         const items = Array.isArray(resource.items)
@@ -28,10 +29,11 @@ export class SaleAssembler {
     toResource(entity) {
         return {
             ...entity,
-            customerId: entity.customerId == null ? null : String(entity.customerId),
+            userId: Number(entity.userId),
+            customerId: entity.customerId == null ? null : Number(entity.customerId),
             items: (entity.items || []).map(item => ({
                 ...item,
-                productId: String(item.productId),
+                productId: Number(item.productId),
                 quantity: Number(item.quantity),
                 unitPrice: Number(item.unitPrice)
             }))
