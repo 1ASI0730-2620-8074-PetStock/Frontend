@@ -19,6 +19,13 @@ export class AnalyticsApi {
             products: productsResponse.data,
             categories: categoriesResponse.data,
             inventories: inventoriesResponse.data
-        };
+        }
+    }
+    static async createReport(report) {
+
+        const response =
+            await http.post('/reports', report)
+
+        return response.data
     }
 }

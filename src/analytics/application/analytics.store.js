@@ -23,10 +23,52 @@ export function useAnalyticsStore() {
         }
     }
 
+    async function registerReport() {
+
+        const currentUser =
+            JSON.parse(
+                sessionStorage.getItem(
+                    'currentUser'
+                )
+            )
+
+        if (!currentUser) {
+            console.warn(
+                'No existe currentUser en sessionStorage.'
+            )
+            return
+        }
+
+        try {
+
+            await AnalyticsApi.createReport({
+
+                userId:
+                    Number(
+                        currentUser.id
+                    ),
+
+                reportType:
+                    'Weekly Sales',
+
+                fileFormat:
+                    'PDF'
+
+            })
+
+        } catch (e) {
+
+            console.error(
+                'Error registering the report:', e
+            )
+        }
+    }
+
     return {
         report,
         loading,
         error,
-        loadDashboard
-    };
+        loadDashboard,
+        registerReport
+    }
 }
