@@ -8,7 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Planned
 
-- Connect sales, customers, purchases, analytics and the dashboard to the web services.
+- Screens for cash shifts and user preferences.
+
+## [1.0.0] - 2026-11-13
+
+### Added
+
+- Sales and customers connected to the web services (`/sales`, `/payments`, `/customers`, `/purchase-history-entries`).
+- Purchases connected to the web services (`/purchases`).
+- Downloaded PDF reports registered in the web services (`/reports`).
+
+### Fixed
+
+- Missing translation key for the stock caption in the inventory view.
+
+### Changed
+
+- All modules of the web application use the PetStock web services; the json-server fake API is no longer used.
 
 ## [0.1.0] - 2026-11-10
 
